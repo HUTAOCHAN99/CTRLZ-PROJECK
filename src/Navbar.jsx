@@ -43,7 +43,7 @@ export default function Footer() {
   return (
     <footer className="bg-white py-8 border-t border-gray-300">
       <div className="container mx-auto px-4">
-        {/* Mobile view*/}
+        {/* Mobile view: dropdown for each section */}
         <div className="md:hidden">
           {footerData.map((section, index) => (
             <div key={index} className="mb-4">
@@ -59,7 +59,7 @@ export default function Footer() {
                     <li key={idx}>
                       <a
                         href={item.href}
-                        className="block py-1  text-slate-500 hover:text-slate-900 transition duration-300"
+                        className="block py-1 text-slate-400 hover:text-slate-900 transition duration-300"
                       >
                         {item.name}
                       </a>
@@ -71,7 +71,7 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Desktop view*/}
+        {/* Desktop view: columns */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           {footerData.map((section, index) => (
             <div key={index}>
@@ -81,7 +81,7 @@ export default function Footer() {
                   <li key={idx}>
                     <a
                       href={item.href}
-                      className="block py-1  text-slate-500 hover:text-slate-900 transition duration-300"
+                      className="block py-1 text-slate-400 hover:text-slate-900 transition duration-300"
                     >
                       {item.name}
                     </a>
@@ -96,10 +96,10 @@ export default function Footer() {
       <div className="mt-8 text-center">
         <p className="text-gray-500">&copy; 2024 CTRL-Z All Rights Reserved.</p>
         <div className="flex justify-center mt-4 space-x-6">
-          <a href="#" className=" text-slate-500 hover:text-slate-900 transition duration-300">
+          <a href="#" className="text-slate-400 hover:text-slate-900 transition duration-300">
             About us
           </a>
-          <a href="#" className=" text-slate-500 hover:text-slate-900 transition duration-300">
+          <a href="#" className="text-slate-400 hover:text-slate-900 transition duration-300">
             Contact us
           </a>
         </div>

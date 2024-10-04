@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -8,12 +7,12 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-transparent absolute top-0 left-0 w-full flex items-center z-10">
+    <header className="bg-transparent fixed top-0 left-0 w-full flex items-center z-10 shadow-lg ">
       <div className="container">
         <div className="flex items-center justify-between relative">
-          <div className="px-4">
+          <div className="">
             <a href="#home" className="font-bold text-lg text-primary block py-6">
-              CTRL-Z
+              <img src="src\img\Leonardo_Phoenix_Design_a_modern_minimalist_logo_for_CtrlZ_tha_3-removebg-preview-transformed.png" alt="" width="100px"/>
             </a>
           </div>
           <div className="flex items-center px-4">
@@ -36,28 +35,18 @@ export default function Header() {
             >
               <ul className="block lg:flex">
                 <li className="group">
-                  <a href="#home" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
-                    Beranda
+                  <a href="#" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
+                 Home
                   </a>
                 </li>
                 <li className="group">
                   <a href="#about" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
-                    Tentang Saya
+                    About Us
                   </a>
                 </li>
                 <li className="group">
-                  <a href="#portfolio" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
-                    Portfolio
-                  </a>
-                </li>
-                <li className="group">
-                  <a href="#clients" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
-                    Clients
-                  </a>
-                </li>
-                <li className="group">
-                  <a href="#blog" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
-                    Blog
+                  <a href="#destinasi" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
+                    Destinasi
                   </a>
                 </li>
                 <li className="group">

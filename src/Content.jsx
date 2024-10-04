@@ -16,26 +16,26 @@ export default function Content() {
 
       {/* Navigation Buttons */}
       {/* Hide on sm and md screens */}
-      <nav className="bg-white shadow-md p-4 flex justify-center space-x-6 text-gray-700 font-semibold hidden sm:hidden md:flex">
-        <button className="hover:text-red-500 transition duration-300">
+      <nav className="bg-white shadow-md p-4 flex justify-center space-x-6 text-gray-400 font-semibold hidden sm:hidden md:flex">
+        <button className="hover:text-slate-900 transition duration-300">
           Intro
         </button>
-        <button className="hover:text-red-500 transition duration-300">
+        <button className="hover:text-slate-900 transition duration-300">
           Attractions
         </button>
-        <button className="hover:text-red-500 transition duration-300">
+        <button className="hover:text-slate-900 transition duration-300">
           By Interest
         </button>
-        <button className="hover:text-red-500 transition duration-300">
+        <button className="hover:text-slate-900 transition duration-300">
           Get There
         </button>
-        <button className="hover:text-red-500 transition duration-300">
+        <button className="hover:text-slate-900 transition duration-300">
           Itineraries
         </button>
-        <button className="hover:text-red-500 transition duration-300">
+        <button className="hover:text-slate-900 transition duration-300">
           Hotels
         </button>
-        <button className="hover:text-red-500 transition duration-300">
+        <button className="hover:text-slate-900 transition duration-300">
           Experiences
         </button>
       </nav>

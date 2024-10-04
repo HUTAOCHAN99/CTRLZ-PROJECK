@@ -6,6 +6,7 @@ import Destination from "./Destination_Box";
 import Destination_Box from "./Destination_Box";
 import Footer from "./Footer";
 
+
 export default function App() {
   return (
     <>
@@ -13,9 +14,9 @@ export default function App() {
       <Title />
       <Content />
       <Destination>
-        <Destination_Box/>
+        <Destination_Box />
       </Destination>
-      <Footer/>
+      <Footer />
     </>
   );
 }
