@@ -1,4 +1,6 @@
 import React from "react";
+import Caption from "./Caption";
+
 
 export default function Content() {
   return (
@@ -13,7 +15,8 @@ export default function Content() {
       </div>
 
       {/* Navigation Buttons */}
-      <nav className="bg-white shadow-md p-4 flex justify-center space-x-6 text-gray-700 font-semibold">
+      {/* Hide on sm and md screens */}
+      <nav className="bg-white shadow-md p-4 flex justify-center space-x-6 text-gray-700 font-semibold hidden sm:hidden md:flex">
         <button className="hover:text-red-500 transition duration-300">
           Intro
         </button>
@@ -36,8 +39,7 @@ export default function Content() {
           Experiences
         </button>
       </nav>
+      <Caption/>
     </div>
   );
 }
-
-
