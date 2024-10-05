@@ -5,6 +5,9 @@ import { logOut, signInWithGoogle } from "./firebase";
 import { useAuth } from "./firebase/AuthContext";
 import { RiGoogleFill, RiUser3Fill } from "@remixicon/react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./components/ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
+import { router } from "./router";
+
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +18,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white fixed top-0 left-0 w-full flex items-center z-10 shadow-lg ">
+    <header className="bg-white sticky left-0 w-full flex items-center z-10 shadow-lg mb-8">
       <div className="container px-4">
         <div className="flex items-center relative">
           <button
@@ -74,6 +77,7 @@ export default function Header() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => router.navigate("/mydestination")}>Destinasi Milik Saya</DropdownMenuItem>
               <DropdownMenuItem onClick={() => logOut()}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu> :

@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Title() {
   return (
-    <div className="container mx-4 pt-36">
+    <div className="container mx-4">
       <div className="text-gray-600">
         <p className="text-sm font-medium">Pariwisata Yogyakarta</p>
         <h1 className="text-5xl font-bold text-black">Yogyakarta</h1>

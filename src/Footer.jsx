@@ -41,7 +41,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-white py-8 border-t border-gray-300">
+    <footer className="bg-white py-8 border-t border-gray-300 mt-8">
       <div className="container mx-auto px-4">
         {/* Mobile view*/}
         <div className="md:hidden">

@@ -3,13 +3,8 @@ import "./App.css";
 import Footer from "./Footer";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./pages/home/Home";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home></Home>
-  }
-])
+import { MyDestination } from "./pages/mydestination/MyDestination";
+import { router } from "./router";
 
 export default function App() {
   return (
