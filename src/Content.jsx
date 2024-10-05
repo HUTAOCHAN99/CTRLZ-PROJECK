@@ -1,6 +1,6 @@
 import React from "react";
 import Caption from "./Caption";
-
+import NolKilometerImg from "./img/NolKilometer.jpg"
 
 export default function Content() {
   return (
@@ -8,7 +8,7 @@ export default function Content() {
       {/* Image Container */}
       <div className="relative">
         <img
-          src="src\img\NolKilometer.jpg" // Replace with actual image link
+          src={NolKilometerImg} // Replace with actual image link
           alt="NolKilometer"
           className="w-full h-[500px] object-cover"
         />

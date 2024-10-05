@@ -1,4 +1,6 @@
 import { useState } from "react";
+import img from "./img/Leonardo_Phoenix_Design_a_modern_minimalist_logo_for_CtrlZ_tha_3-removebg-preview-transformed.png";
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -12,7 +14,7 @@ export default function Header() {
         <div className="flex items-center justify-between relative">
           <div className="">
             <a href="#home" className="font-bold text-lg text-primary block py-6">
-              <img src="src\img\Leonardo_Phoenix_Design_a_modern_minimalist_logo_for_CtrlZ_tha_3-removebg-preview-transformed.png" alt="" width="100px"/>
+              <img src={img} alt="" width="100px"/>
             </a>
           </div>
           <div className="flex items-center px-4">
