@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useDestinations } from "./firebase";
+import { useDestinations } from "@/firebase";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Button } from "./components/ui/button";
+import { Button } from "@/components/ui/button";
 
-export default function Destination_Box() {
+export default function DestinationList() {
   const [sortOption, setSortOption] = useState("recommended");
   const [showAll, setShowAll] = useState(false);
 
