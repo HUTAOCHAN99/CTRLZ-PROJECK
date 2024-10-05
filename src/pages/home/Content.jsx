@@ -1,6 +1,6 @@
 import React from "react";
 import Caption from "./Caption";
-import NolKilometerImg from "./img/NolKilometer.jpg"
+import NolKilometerImg from "@/img/NolKilometer.jpg"
 
 export default function Content() {
   return (

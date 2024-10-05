@@ -25,3 +25,4 @@ dist-ssr
 
 .env
 .firebase/*
+admin-sdk-config.json
