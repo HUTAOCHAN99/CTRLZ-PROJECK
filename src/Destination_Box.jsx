@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useDestinations } from "./firebase";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "./components/ui/button";
 
 export default function Destination_Box() {
   const [sortOption, setSortOption] = useState("recommended");
@@ -28,19 +30,19 @@ export default function Destination_Box() {
         </h2>
 
         {!loading && !error && data && <>
-
-          {/* Sorting Dropdown */}
-          <div className="flex justify-between items-center mb-6">
-            <span className="text-lg font-medium">Sort by:</span>
-            <select
-              className="border border-gray-300 rounded-md p-2"
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-            >
-              <option value="recommended">Recommended</option>
-              <option value="rating">By Rating</option>
-              <option value="reviews">Most Viewed</option>
-            </select>
+          <div className="flex">
+            <div className="flex-grow"></div>
+            <Select  value={sortOption}
+              onValueChange={(value) => setSortOption(value)}>
+              <SelectTrigger className="w-40">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="recommended">Recommended</SelectItem>
+                <SelectItem value="rating">By Rating</SelectItem>
+                <SelectItem value="reviews">Most Viewed</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* List of Destinations */}
@@ -75,12 +77,7 @@ export default function Destination_Box() {
           {/* Show All Button */}
           <div className="w-full flex justify-center">
             {!showAll && (
-              <button
-                onClick={() => setShowAll(true)}
-                className="mt-8 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-              >
-                Show All Central Yogyakarta
-              </button>
+              <Button className="mt-8" onClick={() => setShowAll(true)}>Show All Central Yogyakarta</Button>
             )}
           </div>
         </>
