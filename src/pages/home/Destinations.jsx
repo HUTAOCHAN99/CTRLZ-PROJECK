@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useDestinations } from "@/firebase";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button";
+import DestinationList from "@/components/DestinationList";
 
-export default function DestinationList() {
+export default function Destinations() {
   const [sortOption, setSortOption] = useState("recommended");
   const [showAll, setShowAll] = useState(false);
 
@@ -47,32 +48,7 @@ export default function DestinationList() {
 
           {/* List of Destinations */}
           <h3 className="text-2xl font-semibold mb-4">Central Yogyakarta</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {displayedDestinations.map((destination) => (
-              <div
-                className="bg-white rounded-lg shadow-lg overflow-hidden"
-                key={destination.id}
-              >
-                <img
-                  src={destination.image}
-                  alt={destination.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h4 className="text-xl font-semibold">{destination.name}</h4>
-                  <p className="text-gray-600 mt-2">{destination.description}</p>
-                  <div className="mt-4 flex justify-between items-center">
-                    <div className="text-yellow-500 font-bold">
-                      ⭐ {destination.rating}
-                    </div>
-                    <div className="text-gray-500 text-sm">
-                      ({destination.reviews} reviews)
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <DestinationList list={displayedDestinations} createLink={({id}) => `/destination/${id}`}/>
 
           {/* Show All Button */}
           <div className="w-full flex justify-center">

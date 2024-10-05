@@ -18,7 +18,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white sticky left-0 w-full flex items-center z-10 shadow-lg mb-8">
+    <header className="bg-white sticky top-0 w-full flex items-center z-10 shadow-lg mb-8">
       <div className="container px-4">
         <div className="flex items-center relative">
           <button
@@ -76,7 +76,7 @@ export default function Header() {
                 <RiUser3Fill size="20px"/>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => router.navigate("/mydestination")}>Destinasi Milik Saya</DropdownMenuItem>
               <DropdownMenuItem onClick={() => logOut()}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
