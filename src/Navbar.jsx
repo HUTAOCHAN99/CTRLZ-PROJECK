@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "./components/ui/button";
 
 export default function Footer() {
   const [isDropdownOpen, setIsDropdownOpen] = useState([false, false, false]);
