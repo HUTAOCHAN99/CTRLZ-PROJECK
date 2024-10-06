@@ -46,7 +46,7 @@ export default function OurTeam() {
           </div>
         </div>
         <div className="w-full md:w-[40%] text-left">
-          <blockquote class="text-gray-800 italic border-l-4 border-gray-300 pl-4 my-6">
+          <blockquote className="text-gray-800 italic border-l-4 border-gray-300 pl-4 my-6">
             CTRLZ adalah tim yang menggambarkan konsep melihat ke belakang untuk
             mengevaluasi kesalahan yang telah dibuat, sejalan dengan fungsi
             tombol keyboard Ctrl + Z. Terkadang, melihat ke belakang tidak

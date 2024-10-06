@@ -45,9 +45,9 @@ export default function Header() {
             >
               <ul className="block lg:flex">
                 <li className="group">
-                  <a href="#" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
+                  <Link to="/" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li className="group">
                   <Link to="/aboutus" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
@@ -55,14 +55,14 @@ export default function Header() {
                   </Link>
                 </li>
                 <li className="group">
-                  <a href="#destinasi" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
+                  <Link to="/#destinasi" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
                     Destinasi
-                  </a>
+                  </Link>
                 </li>
                 <li className="group">
-                  <a href="#contact" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
+                  <Link href="#contact" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
                     Contacts
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -73,7 +73,7 @@ export default function Header() {
           {auth ? <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
-                <RiUser3Fill size="20px"/>
+                <RiUser3Fill size="20px" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -83,7 +83,7 @@ export default function Header() {
           </DropdownMenu> :
             <div>
               <Button onClick={() => signInWithGoogle()}>
-                <RiGoogleFill className="mr-2"/>
+                <RiGoogleFill className="mr-2" />
                 Login</Button>
             </div>
           }
