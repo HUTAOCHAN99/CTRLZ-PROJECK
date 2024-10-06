@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, query, where, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
 
 const firebaseConfig = {
@@ -14,6 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
+const storage = getStorage(app)
 export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
@@ -38,7 +40,7 @@ const usePendingData = (func, mapper) => {
         data: null
     });
 
-    useEffect(() => {
+    const refresh = () => {
         func().then((value) => {
             setState({
                 loading: false,
@@ -53,17 +55,21 @@ const usePendingData = (func, mapper) => {
                 data: null
             })
         });
+    }
+
+    useEffect(() => {
+        refresh();
     }, []);
 
-    return state;
+    return {state, refresh};
 }
 
 const useDoc = (doc) => {
-    return usePendingData(() => getDoc(doc), (value) => ({ id: value.id, ...value.data() }))
+    return usePendingData(() => getDoc(doc), (value) => ({ id: value.id, ...value.data() })).state
 }
 
 const useDocs = (query) => {
-    return usePendingData(() => getDocs(query), (value) => value.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+    return usePendingData(() => getDocs(query), (value) => value.docs.map((doc) => ({ id: doc.id, ...doc.data() }))).state
 }
 
 export const useDestinations = () => {
@@ -126,11 +132,43 @@ export const useAddDestination = () => {
 }
 
 export const useEditDestination = () => {
-    const { isLoading, runAction } = useAction(async ({id, data}) => {
-        return await setDoc(doc(database, "destinations", id), data, { merge: true});
+    const { isLoading, runAction } = useAction(async ({ id, data }) => {
+        return await setDoc(doc(database, "destinations", id), data, { merge: true });
     })
     return {
         isLoading,
         editDestination: runAction
     }
 };
+
+const destinationStorageRef = ref(storage, "destinations");
+
+const getDestinationImageRef = (id) => ref(destinationStorageRef, `${id}/image`);
+
+export const useUploadDestinationImage = (id) => {
+    const { isLoading, runAction } = useAction(async (file) => {
+        return await uploadBytes(getDestinationImageRef(id), file);
+    })
+    return {
+        isLoading,
+        uploadDestinationImage: runAction
+    }
+}
+
+export const useDestinationImageUrl = (id) => {
+    const {state, refresh} = usePendingData(async () => {
+        try {
+            return await getDownloadURL(getDestinationImageRef(id));
+        } catch (error) {
+            if (error.code == 'storage/object-not-found') {
+                return null;
+            }
+            throw error;
+        }
+    }, (doc) => doc)
+
+    return {
+        url: state,
+        refresh
+    }
+}
