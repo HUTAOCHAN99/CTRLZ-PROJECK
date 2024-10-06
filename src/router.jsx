@@ -2,18 +2,31 @@ import { createBrowserRouter } from "react-router-dom";
 import { Home } from "./pages/home/Home";
 import { MyDestination } from "./pages/mydestination/MyDestination";
 import { MyDestinationDetails } from "./pages/mydestination-details/MyDestinationDetails";
+import AboutUs from "./pages/aboutus/AboutUs";
+import { Layout } from "./Layout";
 
 export const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home/>
+      element: <Layout/>,
+      children: [
+        {
+          path: "",
+          element: <Home/>
+        },
+        {
+          path: "mydestination",
+          element: <MyDestination/>
+        },
+        {
+          path: "mydestination/:id",
+          element: <MyDestinationDetails/>
+        },
+        {
+          path: "aboutus",
+          element: <AboutUs/>
+        }
+      ]
     },
-    {
-      path: "/mydestination",
-      element: <MyDestination/>
-    },
-    {
-      path: "/mydestination/:id",
-      element: <MyDestinationDetails/>
-    }
+
   ])

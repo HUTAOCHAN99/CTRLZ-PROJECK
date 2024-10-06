@@ -5,7 +5,7 @@ import { logOut, signInWithGoogle } from "./firebase";
 import { useAuth } from "./firebase/AuthContext";
 import { RiGoogleFill, RiUser3Fill } from "@remixicon/react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./components/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { router } from "./router";
 
 
@@ -50,9 +50,9 @@ export default function Header() {
                   </a>
                 </li>
                 <li className="group">
-                  <a href="#about" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
+                  <Link to="/aboutus" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
                     About Us
-                  </a>
+                  </Link>
                 </li>
                 <li className="group">
                   <a href="#destinasi" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
