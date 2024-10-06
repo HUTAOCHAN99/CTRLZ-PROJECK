@@ -4,7 +4,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAddDestinationsPanorama, useDeleteDestination, useDestinationById, useDestinationImageUrl, useDestinationPanoramaUrl, useDestinationsPanorama, useEditDestination, useUploadDestinationImage } from "@/firebase"
+import { useAddDestinationsPanorama, useDeleteDestination, useDeleteDestionationPanorama, useDestinationById, useDestinationImageUrl, useDestinationPanoramaUrl, useDestinationsPanorama, useEditDestination, useUploadDestinationImage } from "@/firebase"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -107,6 +107,53 @@ const panoramaSchema = z.object({
     }, 'File size must be less than 2MB')
 })
 
+function DestinationPanoramasItem({ destinationId, panorama, onRefresh }) {
+    const [open, setOpen] = useState(false);
+    const { isLoading, deletePanorama } = useDeleteDestionationPanorama(destinationId, panorama.id);
+
+    return <li>
+        <div className="flex justify-between items-center">
+            <h2>{panorama.name}</h2>
+
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Hapus Panorama</DialogTitle>
+                    </DialogHeader>
+                    <p>Apakah anda ingin menghapus panorama?</p>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button variant="secondary" disabled={isLoading}>Batal</Button>
+                        </DialogClose>
+                        <Button variant="destructive" disabled={isLoading} onClick={() => {
+                            deletePanorama().then((value) => {
+                                if (value.success) {
+                                    setOpen(false);
+                                    onRefresh();
+                                }
+                            })
+                        }}>Hapus</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <RiMore2Fill/>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setTimeout(() => setOpen(true), 50)}>Hapus</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
+
+        <DestinationPanoramaViewer destinationId={destinationId} panoramaId={panorama.id}/>
+    </li>
+}
+
 function DestinationPanoramas({ id }) {
     const { refresh, state } = useDestinationsPanorama(id);
     const { isLoading, addPanorama } = useAddDestinationsPanorama(id);
@@ -187,7 +234,7 @@ function DestinationPanoramas({ id }) {
         {state.loading ? <p className="text-center">Memuat...</p> :
             state.error ? <p className="text-center">Gagal Memuat {error}</p>
                 : state.data.length == 0 ? <p className="text-center">Masih kosong</p> : <ul>
-                    {state.data.map((pano) => <li key={pano.id}><DestinationPanoramaViewer destinationId={id} panoramaId={pano.id} /></li>)}
+                    {state.data.map((pano) => <DestinationPanoramasItem destinationId={id} panorama={pano} key={pano.id} onRefresh={refresh} />)}
                 </ul>}
     </div>
 

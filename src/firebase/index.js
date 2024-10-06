@@ -229,3 +229,14 @@ export function useDestinationPanoramaUrl(destinationId, panoramaId) {
         refresh
     }
 }
+
+export function useDeleteDestionationPanorama(destinationId, panoramaId) {
+    const { isLoading, runAction } = useAction(async () => {
+        return deleteDoc(doc(getPanoramasRef(destinationId), panoramaId));
+    })
+
+    return {
+        isLoading,
+        deletePanorama: runAction
+    }
+}
