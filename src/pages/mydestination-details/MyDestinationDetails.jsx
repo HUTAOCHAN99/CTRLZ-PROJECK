@@ -1,9 +1,15 @@
 import { DestinationInformationEditDialog } from "@/components/DestinationInformationEditDialog";
 import { Button } from "@/components/ui/button";
 import { DialogTrigger } from "@/components/ui/dialog";
-import { useDestinationById, useEditDestination } from "@/firebase"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useDestinationById, useDestinationImageUrl, useEditDestination, useUploadDestinationImage } from "@/firebase"
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import { z } from "zod";
 
 function DestinationInformation({ destination }) {
     const [value, setValue] = useState({
@@ -38,9 +44,64 @@ function DestinationInformation({ destination }) {
     </div>
 }
 
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 2; 
+const schema = z.object({
+    image: z.instanceof(File, { message: "Tidak boleh kosong" }).refine((file) => {
+        return !file || file.size <= MAX_UPLOAD_SIZE;
+    }, 'File size must be less than 2MB')
+})
+
+function DestinationImage({ id }) {
+    const { url, refresh } = useDestinationImageUrl(id);
+    const { isLoading, uploadDestinationImage } = useUploadDestinationImage(id);
+    const form = useForm({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            image: ""
+        }
+    })
+
+    function onSubmit(value) {
+        uploadDestinationImage(value.image).then(() => {
+            refresh();
+        })
+    }
+
+    return <div>
+        <h2 className="text-xl mb-4">Gambar</h2>
+        {url.loading ? <p className="text-center">Memuat...</p> :
+            url.error ? <p className="text-center">Gagal Memuat {error}</p>
+                : url.data == null ? <p className="text-center">Masih kosong</p> : <img src={url.data} />}
+
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                    control={form.control}
+                    name="image"
+                    render={({ field }) => {
+                        return (
+                            <FormItem>
+                                <FormLabel>Image</FormLabel>
+                                <FormControl>
+                                    <Input type="file" accept="image/*" ref={field.ref} disabled={field.disabled} name={field.name} onBlur={field.onBlur} onChange={(e) => field.onChange(e.target.files?.[0])} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        );
+                    }}
+                />
+                <Button type="submit">Ganti</Button>
+            </form>
+        </Form>
+    </div>
+}
+
 function Content({ destination }) {
     return <>
-        <DestinationInformation destination={destination} />
+        <div className="space-y-8">
+            <DestinationInformation destination={destination} />
+            <DestinationImage id={destination.id} />
+        </div>
     </>
 }
 
