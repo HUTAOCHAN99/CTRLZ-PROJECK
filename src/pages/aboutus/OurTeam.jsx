@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import teamLogo from "@/img/logo_team.jpg";
 import member1 from "@/img/HutaoChan.jpg";
+import member3 from "@/img/a.jpg";
+
 
 export default function OurTeam() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -216,7 +218,7 @@ export default function OurTeam() {
             <div className="member w-full h-full flex flex-col md:flex-row bg-white shadow-lg rounded-lg p-4">
               <div className="w-full md:w-1/2 flex items-center justify-center mb-4 md:mb-0">
                 <img
-                  src={member1}
+                  src={member3}
                   alt="Member 3"
                   className="w-full h-3/4 object-cover rounded-md"
                 />
@@ -228,7 +230,7 @@ export default function OurTeam() {
                 <p className="text-gray-600">
                   Universitas Pembangunan Nasional "Veteran" Yogyakarta
                 </p>
-                <p className="text-gray-600">Ketua Tim</p>
+                <p className="text-gray-600">Anggota Tim</p>
                 <p className="text-gray-600">Front end Developer</p>
                 <h4 className="text-center justify-center font-bold mt-3">
                   Contact me
