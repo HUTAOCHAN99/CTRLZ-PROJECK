@@ -5,6 +5,7 @@
 body {
   font-family: "Inter", sans-serif;
 }
+
 .navbar-fixed {
   @apply fixed z-[9999] bg-white bg-opacity-80;
   backdrop-filter: blur(5px);
@@ -22,4 +23,10 @@ body {
 
 .hamburger-active > span:nth-child(3) {
   @apply origin-bottom-left -rotate-45;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
 }
