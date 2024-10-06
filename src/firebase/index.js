@@ -212,6 +212,25 @@ export const useAddDestinationsPanorama = (id) => {
     }
 }
 
+export const useEditDestinationsPanorama = (id, panoramaId) => {
+    const { isLoading, runAction } = useAction(async ({ name, image }) => {
+        const currentUser = auth.currentUser;
+        if (!currentUser) throw new Error("Not logged in");
+
+        await setDoc(doc(getPanoramasRef(id), panoramaId), {
+            name
+        }, { merge: true })
+        if (image != null) {
+            return await uploadBytes(getPanoramasImageRef(id, panoramaId), image);
+        }
+    }
+    )
+    return {
+        isLoading,
+        editPanorama: runAction
+    }
+}
+
 export function useDestinationPanoramaUrl(destinationId, panoramaId) {
     const {state, refresh} = usePendingData(async () => {
         try {
@@ -227,5 +246,16 @@ export function useDestinationPanoramaUrl(destinationId, panoramaId) {
     return {
         url: state,
         refresh
+    }
+}
+
+export function useDeleteDestionationPanorama(destinationId, panoramaId) {
+    const { isLoading, runAction } = useAction(async () => {
+        return deleteDoc(doc(getPanoramasRef(destinationId), panoramaId));
+    })
+
+    return {
+        isLoading,
+        deletePanorama: runAction
     }
 }
