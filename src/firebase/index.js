@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, addDoc, getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
@@ -145,6 +145,16 @@ export const useEditDestination = () => {
         editDestination: runAction
     }
 };
+
+export function useDeleteDestination(id){
+    const {isLoading, runAction} = useAction(async () => {
+        return await deleteDoc(doc(database, "destinations", id));
+    })
+    return {
+        isLoading,
+        deleteDestination: runAction
+    }
+}
 
 const destinationStorageRef = ref(storage, "destinations");
 
