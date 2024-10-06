@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 
@@ -31,7 +31,7 @@ export const logOut = () => signOut(auth)
 
 const destinationsRef = collection(database, "destinations");
 
-const useDocs = (query) => {
+const usePendingData = (func, mapper) => {
     const [state, setState] = useState({
         loading: true,
         error: null,
@@ -39,11 +39,11 @@ const useDocs = (query) => {
     });
 
     useEffect(() => {
-        getDocs(query).then((value) => {
+        func().then((value) => {
             setState({
                 loading: false,
                 error: null,
-                data: value.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+                data: mapper(value)
             });
         }).catch((err) => {
             console.error(err);
@@ -58,33 +58,42 @@ const useDocs = (query) => {
     return state;
 }
 
+const useDoc = (doc) => {
+    return usePendingData(() => getDoc(doc), (value) => ({ id: value.id, ...value.data() }))
+}
+
+const useDocs = (query) => {
+    return usePendingData(() => getDocs(query), (value) => value.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+}
+
 export const useDestinations = () => {
     return useDocs(destinationsRef);
+}
+
+export const useDestinationById = (id) => {
+    return useDoc(doc(database, "destinations", id));
 }
 
 export const useMyDestination = () => {
     return useDocs(query(destinationsRef, where("userUid", "==", auth.currentUser.uid)));
 }
 
-export const useAddDestination = () => {
+const useAction = (action) => {
     const [isLoading, setIsLoading] = useState(false);
 
-    const addDestination = async (data) => {
+    const runAction = async (data) => {
         if (isLoading) return { success: false };
-        const currentUser = auth.currentUser;
-        if (!currentUser) return { success: false, error: new Error("Not logged in") };
 
         setIsLoading(true);
         try {
-            const res = await addDoc(destinationsRef, {
-                ...data,
-                userUid: currentUser.uid
-            })
+            const res = await action(data);
+            setIsLoading(false);
             return {
                 success: true,
                 data: res
             }
         } catch (e) {
+            console.error(e);
             setIsLoading(false);
             return {
                 success: false,
@@ -95,6 +104,33 @@ export const useAddDestination = () => {
 
     return {
         isLoading,
-        addDestination
+        runAction
     }
 }
+
+export const useAddDestination = () => {
+    const { isLoading, runAction } = useAction(async (data) => {
+        const currentUser = auth.currentUser;
+        if (!currentUser) throw new Error("Not logged in");
+
+        return await addDoc(destinationsRef, {
+            ...data,
+            userUid: currentUser.uid
+        })
+    }
+    )
+    return {
+        isLoading,
+        addDestination: runAction
+    }
+}
+
+export const useEditDestination = () => {
+    const { isLoading, runAction } = useAction(async ({id, data}) => {
+        return await setDoc(doc(database, "destinations", id), data, { merge: true});
+    })
+    return {
+        isLoading,
+        editDestination: runAction
+    }
+};
