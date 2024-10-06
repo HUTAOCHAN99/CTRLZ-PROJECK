@@ -4,13 +4,15 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAddDestinationsPanorama, useDestinationById, useDestinationImageUrl, useDestinationPanoramaUrl, useDestinationsPanorama, useEditDestination, useUploadDestinationImage } from "@/firebase"
+import { useAddDestinationsPanorama, useDeleteDestination, useDestinationById, useDestinationImageUrl, useDestinationPanoramaUrl, useDestinationsPanorama, useEditDestination, useUploadDestinationImage } from "@/firebase"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 import { DestinationPanoramaViewer } from "@/components/Panorama";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown-menu";
+import { RiMenu2Fill, RiMore2Fill } from "@remixicon/react";
 
 function DestinationInformation({ destination }) {
     const [value, setValue] = useState({
@@ -185,7 +187,7 @@ function DestinationPanoramas({ id }) {
         {state.loading ? <p className="text-center">Memuat...</p> :
             state.error ? <p className="text-center">Gagal Memuat {error}</p>
                 : state.data.length == 0 ? <p className="text-center">Masih kosong</p> : <ul>
-                    {state.data.map((pano) => <li key={pano.id}><DestinationPanoramaViewer destinationId={id} panoramaId={pano.id}/></li>)}
+                    {state.data.map((pano) => <li key={pano.id}><DestinationPanoramaViewer destinationId={id} panoramaId={pano.id} /></li>)}
                 </ul>}
     </div>
 
@@ -203,10 +205,45 @@ function Content({ destination }) {
 
 function MyDestinationDetailsContent({ id }) {
     const { loading, data, error } = useDestinationById(id);
+    const { isLoading: isDeleteLoading, deleteDestination } = useDeleteDestination(id);
+    const navigate = useNavigate();
+
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     return <div className="container mx-auto">
+        <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Hapus</DialogTitle>
+                </DialogHeader>
+                <p>Apakah anda yakin untuk menghapus?</p>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant="secondary">Batal</Button>
+                    </DialogClose>
+                    <Button disabled={isDeleteLoading} variant="destructive" onClick={() => {
+                        deleteDestination().then((res) => {
+                            if (res.success) {
+                                navigate("/mydestination");
+                            }
+                        })
+                    }}>Hapus</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
         <div className="flex justify-between items-center mb-2">
             <h1 className="text-2xl">Properti Destinasi</h1>
+
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <RiMore2Fill />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => setTimeout(() => setDeleteDialogOpen(true), 50)}>Hapus</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
 
         {loading ? <p className="text-center">Memuat...</p> :
