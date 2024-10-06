@@ -68,8 +68,13 @@ const useDoc = (doc) => {
     return usePendingData(() => getDoc(doc), (value) => ({ id: value.id, ...value.data() })).state
 }
 
+const useDocsInternal = (query) => {
+    return usePendingData(() => getDocs(query), (value) => value.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+}
+
+
 const useDocs = (query) => {
-    return usePendingData(() => getDocs(query), (value) => value.docs.map((doc) => ({ id: doc.id, ...doc.data() }))).state
+    return useDocsInternal(query).state
 }
 
 export const useDestinations = () => {
@@ -159,6 +164,48 @@ export const useDestinationImageUrl = (id) => {
     const {state, refresh} = usePendingData(async () => {
         try {
             return await getDownloadURL(getDestinationImageRef(id));
+        } catch (error) {
+            if (error.code == 'storage/object-not-found') {
+                return null;
+            }
+            throw error;
+        }
+    }, (doc) => doc)
+
+    return {
+        url: state,
+        refresh
+    }
+}
+
+const getPanoramasRef = (destinationId) => collection(doc(database, "destinations", destinationId), "panoramas")
+const getPanoramasImageRef = (destinationId, panoramaId) => ref(destinationStorageRef, `${destinationId}/panoramas/${panoramaId}`)
+
+export function useDestinationsPanorama(id) {
+    return useDocsInternal(getPanoramasRef(id));
+}
+
+export const useAddDestinationsPanorama = (id) => {
+    const { isLoading, runAction } = useAction(async ({ name, image }) => {
+        const currentUser = auth.currentUser;
+        if (!currentUser) throw new Error("Not logged in");
+
+        const { id: panoramaId } = await addDoc(getPanoramasRef(id), {
+            name
+        })
+        return await uploadBytes(getPanoramasImageRef(id, panoramaId), image)
+    }
+    )
+    return {
+        isLoading,
+        addPanorama: runAction
+    }
+}
+
+export function useDestinationPanoramaUrl(destinationId, panoramaId) {
+    const {state, refresh} = usePendingData(async () => {
+        try {
+            return await getDownloadURL(getPanoramasImageRef(destinationId, panoramaId));
         } catch (error) {
             if (error.code == 'storage/object-not-found') {
                 return null;

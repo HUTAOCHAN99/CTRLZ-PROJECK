@@ -1,15 +1,16 @@
 import { DestinationInformationEditDialog } from "@/components/DestinationInformationEditDialog";
 import { Button } from "@/components/ui/button";
-import { DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useDestinationById, useDestinationImageUrl, useEditDestination, useUploadDestinationImage } from "@/firebase"
+import { useAddDestinationsPanorama, useDestinationById, useDestinationImageUrl, useDestinationPanoramaUrl, useDestinationsPanorama, useEditDestination, useUploadDestinationImage } from "@/firebase"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
+import { DestinationPanoramaViewer } from "@/components/Panorama";
 
 function DestinationInformation({ destination }) {
     const [value, setValue] = useState({
@@ -44,7 +45,7 @@ function DestinationInformation({ destination }) {
     </div>
 }
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 2; 
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 2;
 const schema = z.object({
     image: z.instanceof(File, { message: "Tidak boleh kosong" }).refine((file) => {
         return !file || file.size <= MAX_UPLOAD_SIZE;
@@ -96,11 +97,106 @@ function DestinationImage({ id }) {
     </div>
 }
 
+const MAX_PANORAMA_UPLOAD_SIZE = 1024 * 1024 * 10;
+const panoramaSchema = z.object({
+    name: z.string().min(5, { message: "Minimal 5 karakter" }).max(50, { message: "Maksimal 50 karakter" }),
+    image: z.instanceof(File, { message: "Tidak boleh kosong" }).refine((file) => {
+        return !file || file.size <= MAX_PANORAMA_UPLOAD_SIZE;
+    }, 'File size must be less than 2MB')
+})
+
+function DestinationPanoramas({ id }) {
+    const { refresh, state } = useDestinationsPanorama(id);
+    const { isLoading, addPanorama } = useAddDestinationsPanorama(id);
+    const [open, setOpen] = useState(false);
+
+    const form = useForm({
+        resolver: zodResolver(panoramaSchema),
+        defaultValues: {
+            name: ""
+        }
+    })
+
+    function onSubmit(value) {
+        addPanorama(value).then((res) => {
+            if (res.success) {
+                setOpen(false);
+                refresh();
+            }
+        })
+    }
+
+    return <div>
+        <div className="flex justify-between">
+            <h2 className="text-xl mb-4">Gambar</h2>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                    <Button>Tambah Panorama</Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Tambah Panorama</DialogTitle>
+                    </DialogHeader>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                            <FormField control={form.control}
+                                name="name"
+                                render={({ field }) =>
+                                    <FormItem>
+                                        <FormLabel>Nama</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                } />
+
+                            <FormField
+                                control={form.control}
+                                name="image"
+                                render={({ field }) => {
+                                    return (
+                                        <FormItem>
+                                            <FormLabel>Image</FormLabel>
+                                            <FormControl>
+                                                <Input type="file" accept="image/*" ref={field.ref} disabled={field.disabled} name={field.name} onBlur={field.onBlur} onChange={(e) => field.onChange(e.target.files?.[0])} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+
+                            <DialogFooter >
+                                <DialogClose asChild>
+                                    <Button variant="destructive" disabled={isLoading}>
+                                        Batal
+                                    </Button>
+                                </DialogClose>
+                                <Button type="submit" disabled={isLoading}>
+                                    Tambah
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </Form>
+                </DialogContent>
+            </Dialog>
+        </div>
+        {state.loading ? <p className="text-center">Memuat...</p> :
+            state.error ? <p className="text-center">Gagal Memuat {error}</p>
+                : state.data.length == 0 ? <p className="text-center">Masih kosong</p> : <ul>
+                    {state.data.map((pano) => <li key={pano.id}><DestinationPanoramaViewer destinationId={id} panoramaId={pano.id}/></li>)}
+                </ul>}
+    </div>
+
+}
+
 function Content({ destination }) {
     return <>
         <div className="space-y-8">
             <DestinationInformation destination={destination} />
             <DestinationImage id={destination.id} />
+            <DestinationPanoramas id={destination.id} />
         </div>
     </>
 }
