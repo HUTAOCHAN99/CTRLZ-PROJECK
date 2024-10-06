@@ -4,7 +4,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAddDestinationsPanorama, useDeleteDestination, useDeleteDestionationPanorama, useDestinationById, useDestinationImageUrl, useDestinationPanoramaUrl, useDestinationsPanorama, useEditDestination, useUploadDestinationImage } from "@/firebase"
+import { useAddDestinationsPanorama, useDeleteDestination, useDeleteDestionationPanorama, useDestinationById, useDestinationImageUrl, useDestinationPanoramaUrl, useDestinationsPanorama, useEditDestination, useEditDestinationsPanorama, useUploadDestinationImage } from "@/firebase"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -106,52 +106,138 @@ const panoramaSchema = z.object({
         return !file || file.size <= MAX_PANORAMA_UPLOAD_SIZE;
     }, 'File size must be less than 2MB')
 })
+const panoramaEditSchema = panoramaSchema.partial({
+    image: true
+})
+
+function DestinationDeletePanoDialog({ destinationId, panoramaId, open, setOpen, onRefresh }) {
+    const { isLoading, deletePanorama } = useDeleteDestionationPanorama(destinationId, panoramaId);
+
+    return <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Hapus Panorama</DialogTitle>
+            </DialogHeader>
+            <p>Apakah anda ingin menghapus panorama?</p>
+            <DialogFooter>
+                <DialogClose asChild>
+                    <Button variant="secondary" disabled={isLoading}>Batal</Button>
+                </DialogClose>
+                <Button variant="destructive" disabled={isLoading} onClick={() => {
+                    deletePanorama().then((value) => {
+                        if (value.success) {
+                            setOpen(false);
+                            onRefresh();
+                        }
+                    })
+                }}>Hapus</Button>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
+}
 
 function DestinationPanoramasItem({ destinationId, panorama, onRefresh }) {
-    const [open, setOpen] = useState(false);
-    const { isLoading, deletePanorama } = useDeleteDestionationPanorama(destinationId, panorama.id);
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [editOpen, setEditOpen] = useState(false);
+    const { isLoading, editPanorama } = useEditDestinationsPanorama(destinationId, panorama.id);
+    const [showPano, setShowPano] = useState(true);
 
     return <li>
         <div className="flex justify-between items-center">
             <h2>{panorama.name}</h2>
 
-            <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Hapus Panorama</DialogTitle>
-                    </DialogHeader>
-                    <p>Apakah anda ingin menghapus panorama?</p>
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="secondary" disabled={isLoading}>Batal</Button>
-                        </DialogClose>
-                        <Button variant="destructive" disabled={isLoading} onClick={() => {
-                            deletePanorama().then((value) => {
-                                if (value.success) {
-                                    setOpen(false);
-                                    onRefresh();
-                                }
-                            })
-                        }}>Hapus</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <DestinationDeletePanoDialog open={deleteOpen} setOpen={setDeleteOpen} destinationId={destinationId} panoramaId={panorama.id} onRefresh={onRefresh} />
+            <PanoramaDialog open={editOpen} setOpen={setEditOpen} formExtra={{ defaultValues: { name: panorama.name } }} isLoading={isLoading} onRefresh={() => {
+                setTimeout(() => {
+                    setShowPano(false);
+                    setTimeout(() => {
+                        setShowPano(true);
+                    }, 100)
+                }, 100)
+            }} title="Edit Panorama" submitText="Edit" onSubmit={(value) => editPanorama(value)} schema={panoramaEditSchema} />
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon">
-                        <RiMore2Fill/>
+                        <RiMore2Fill />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTimeout(() => setOpen(true), 50)}>Hapus</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setTimeout(() => setEditOpen(true), 50)}>Edit</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setTimeout(() => setDeleteOpen(true), 50)}>Hapus</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>
 
-        <DestinationPanoramaViewer destinationId={destinationId} panoramaId={panorama.id}/>
+        {showPano &&
+            <DestinationPanoramaViewer destinationId={destinationId} panoramaId={panorama.id} />}
+
     </li>
+}
+
+function PanoramaDialog({ children, open, setOpen, schema, title, submitText, onSubmit, onRefresh, formExtra, isLoading }) {
+    const form = useForm({
+        resolver: zodResolver(schema),
+        ...formExtra
+    })
+    function handleSubmit(value) {
+        onSubmit(value).then((res) => {
+            if (res.success) {
+                setOpen(false);
+                onRefresh();
+            }
+        })
+    }
+    return <Dialog open={open} onOpenChange={setOpen}>
+        {children}
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>{title}</DialogTitle>
+            </DialogHeader>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                    <FormField control={form.control}
+                        name="name"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Nama</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        } />
+
+                    <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => {
+                            return (
+                                <FormItem>
+                                    <FormLabel>Image</FormLabel>
+                                    <FormControl>
+                                        <Input type="file" accept="image/*" ref={field.ref} disabled={field.disabled} name={field.name} onBlur={field.onBlur} onChange={(e) => field.onChange(e.target.files?.[0])} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            );
+                        }}
+                    />
+
+                    <DialogFooter >
+                        <DialogClose asChild>
+                            <Button variant="destructive" disabled={isLoading}>
+                                Batal
+                            </Button>
+                        </DialogClose>
+                        <Button type="submit" disabled={isLoading}>
+                            {submitText}
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </Form>
+        </DialogContent>
+    </Dialog>
 }
 
 function DestinationPanoramas({ id }) {
@@ -159,77 +245,18 @@ function DestinationPanoramas({ id }) {
     const { isLoading, addPanorama } = useAddDestinationsPanorama(id);
     const [open, setOpen] = useState(false);
 
-    const form = useForm({
-        resolver: zodResolver(panoramaSchema),
-        defaultValues: {
-            name: ""
-        }
-    })
-
-    function onSubmit(value) {
-        addPanorama(value).then((res) => {
-            if (res.success) {
-                setOpen(false);
-                refresh();
-            }
-        })
-    }
-
     return <div>
         <div className="flex justify-between">
-            <h2 className="text-xl mb-4">Gambar</h2>
-            <Dialog open={open} onOpenChange={setOpen}>
+            <h2 className="text-xl mb-4">Panorama</h2>
+            <PanoramaDialog title="Tambah Panorama" submitText="Tambah" onRefresh={refresh} open={open} setOpen={setOpen} schema={panoramaSchema} formExtra={{
+                defaultValues: {
+                    name: ""
+                }
+            }} isLoading={isLoading} onSubmit={(value) => addPanorama(value)}>
                 <DialogTrigger asChild>
                     <Button>Tambah Panorama</Button>
                 </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Tambah Panorama</DialogTitle>
-                    </DialogHeader>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                            <FormField control={form.control}
-                                name="name"
-                                render={({ field }) =>
-                                    <FormItem>
-                                        <FormLabel>Nama</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                } />
-
-                            <FormField
-                                control={form.control}
-                                name="image"
-                                render={({ field }) => {
-                                    return (
-                                        <FormItem>
-                                            <FormLabel>Image</FormLabel>
-                                            <FormControl>
-                                                <Input type="file" accept="image/*" ref={field.ref} disabled={field.disabled} name={field.name} onBlur={field.onBlur} onChange={(e) => field.onChange(e.target.files?.[0])} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    );
-                                }}
-                            />
-
-                            <DialogFooter >
-                                <DialogClose asChild>
-                                    <Button variant="destructive" disabled={isLoading}>
-                                        Batal
-                                    </Button>
-                                </DialogClose>
-                                <Button type="submit" disabled={isLoading}>
-                                    Tambah
-                                </Button>
-                            </DialogFooter>
-                        </form>
-                    </Form>
-                </DialogContent>
-            </Dialog>
+            </PanoramaDialog>
         </div>
         {state.loading ? <p className="text-center">Memuat...</p> :
             state.error ? <p className="text-center">Gagal Memuat {error}</p>
