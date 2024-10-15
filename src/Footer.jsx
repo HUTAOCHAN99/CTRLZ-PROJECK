@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { Link, useNavigate } from "react-router-dom";
+import { router } from "./router";
 export default function Footer() {
   const [isDropdownOpen, setIsDropdownOpen] = useState([false, false, false]);
 
@@ -96,12 +97,12 @@ export default function Footer() {
       <div className="mt-8 text-center">
         <p className="text-gray-500">&copy; 2024 CTRL-Z All Rights Reserved.</p>
         <div className="flex justify-center mt-4 space-x-6">
-          <a href="#" className=" text-slate-500 hover:text-slate-900 transition duration-300">
-            About us
-          </a>
-          <a href="#" className=" text-slate-500 hover:text-slate-900 transition duration-300">
-            Contact us
-          </a>
+          <Link
+            to="/aboutus"
+            className="text-base text-dark py-2 flex mx-8 group-hover:text-primary"
+          >
+            About Us
+          </Link>
         </div>
       </div>
     </footer>

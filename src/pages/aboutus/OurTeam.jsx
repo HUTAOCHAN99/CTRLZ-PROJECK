@@ -105,7 +105,8 @@ export default function OurTeam() {
 
                 <div className="mt-2 flex justify-center space-x-4 bg-slate-600 rounded-lg p-4">
                   <a
-                    href="https://www.instagram.com/"
+                    href=" https://www.instagram.com/ahmad_zhofir_a_nayif/profilecard/?igsh=MWU3aWc2ejRoenBueA==
+"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
@@ -113,23 +114,18 @@ export default function OurTeam() {
                     <i className="fab fa-instagram fa-2x"></i>
                   </a>
                   <a
-                    href="https://www.facebook.com/"
+                    href="https://www.facebook.com/ahmad.z.an.75457?mibextid=ZbWKwL
+"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
                   >
                     <i className="fab fa-facebook fa-2x"></i>
                   </a>
+                  
                   <a
-                    href="https://www.youtube.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white hover:text-blue-300"
-                  >
-                    <i className="fab fa-youtube fa-2x"></i>
-                  </a>
-                  <a
-                    href="https://github.com/"
+                    href="https://github.com/HUTAOCHAN99
+"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
@@ -137,7 +133,7 @@ export default function OurTeam() {
                     <i className="fab fa-github fa-2x"></i>
                   </a>
                   <a
-                    href="https://www.linkedin.com/"
+                    href="https://www.linkedin.com/in/ahmad-zhofir-amanullah-nayif-56130a285?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
@@ -172,31 +168,17 @@ export default function OurTeam() {
 
                 <div className="mt-2 flex justify-center space-x-4 bg-slate-600 rounded-lg p-4">
                   <a
-                    href="https://www.instagram.com/"
+                    href="https://www.instagram.com/levirs565?igsh=MXR0c2c2N2MzajEybQ==
+"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
                   >
                     <i className="fab fa-instagram fa-2x"></i>
                   </a>
+                  
                   <a
-                    href="https://www.facebook.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white hover:text-blue-300"
-                  >
-                    <i className="fab fa-facebook fa-2x"></i>
-                  </a>
-                  <a
-                    href="https://www.youtube.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white hover:text-blue-300"
-                  >
-                    <i className="fab fa-youtube fa-2x"></i>
-                  </a>
-                  <a
-                    href="https://github.com/"
+                    href="https://github.com/levirs565 "
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
@@ -204,7 +186,8 @@ export default function OurTeam() {
                     <i className="fab fa-github fa-2x"></i>
                   </a>
                   <a
-                    href="https://www.linkedin.com/"
+                    href="https://www.linkedin.com/in/levirs565?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
@@ -239,7 +222,7 @@ export default function OurTeam() {
 
                 <div className="mt-2 flex justify-center space-x-4 bg-slate-600 rounded-lg p-4">
                   <a
-                    href="https://www.instagram.com/"
+                    href="https://www.instagram.com/hadstra?igsh=MXJxcDVsMzQ4YWo1cQ%3D%3D"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
@@ -247,13 +230,14 @@ export default function OurTeam() {
                     <i className="fab fa-instagram fa-2x"></i>
                   </a>
                   <a
-                    href="https://www.facebook.com/"
+                    href="https://www.facebook.com/profile.php?id=100014185997586&mibextid=ZbWKwL"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
                   >
                     <i className="fab fa-facebook fa-2x"></i>
                   </a>
+                  {/* Mau gk sertakan yt? */}
                   <a
                     href="https://www.youtube.com/"
                     target="_blank"
@@ -263,20 +247,12 @@ export default function OurTeam() {
                     <i className="fab fa-youtube fa-2x"></i>
                   </a>
                   <a
-                    href="https://github.com/"
+                    href="https://github.com/hafid89"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-blue-300"
                   >
                     <i className="fab fa-github fa-2x"></i>
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white hover:text-blue-300"
-                  >
-                    <i className="fab fa-linkedin fa-2x"></i>
                   </a>
                 </div>
               </div>

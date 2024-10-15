@@ -5,11 +5,12 @@ import { MyDestinationDetails } from "./pages/mydestination-details/MyDestinatio
 import AboutUs from "./pages/aboutus/AboutUs";
 import { Layout } from "./Layout";
 import {Destination} from "./pages/destination/Destination";
+import Destinations from "./pages/home/Destinations";
 
 export const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout/>,
+      element: <Layout/>, 
       children: [
         {
           path: "",
@@ -30,8 +31,11 @@ export const router = createBrowserRouter([
         {
           path:"destination/:id",
           element: <Destination/>
+        },
+        {
+          path: "destinations",  
+          element: <Destinations/> 
         }
-
       ]
     },
 
