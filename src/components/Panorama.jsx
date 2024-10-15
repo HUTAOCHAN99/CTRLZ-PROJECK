@@ -19,7 +19,7 @@ function PanoramaViewer({ panoramaUrl }) {
     }, [panoramaUrl]);
 
     return <div>
-        <div className="w-96 h-96" ref={containerRef} />
+        <div className="w-96 h-96 m-auto" ref={containerRef} />
     </div>
 }
 
