@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import teamLogo from "@/img/logo_team.jpg";
 import member1 from "@/img/HutaoChan.jpg";
 import member3 from "@/img/a.jpg";
+
 
 
 export default function OurTeam() {
