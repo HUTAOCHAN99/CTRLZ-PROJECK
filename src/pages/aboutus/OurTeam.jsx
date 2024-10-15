@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import teamLogo from "@/img/logo_team.jpg";
-import member1 from "@/img/HutaoChan.jpg";
-import member3 from "@/img/a.jpg";
-
+import member1 from "@/img/m-1.jpg";
+import member2 from "@/img/m-2.jpg";
+import member3 from "@/img/m-3.jpg";
 
 
 export default function OurTeam() {
@@ -30,7 +30,7 @@ export default function OurTeam() {
   return (
     <div
       className={`min-h-screen flex flex-col items-center justify-center bg-gray-100 mt-16 relative ${
-        isExpanded ? "p-32" : "p-16"
+        isExpanded ? "pt-32 pb-32" : "pt-16 pb-16"
       }`}
     >
       {/* Bagian About Us */}
@@ -153,7 +153,7 @@ export default function OurTeam() {
             <div className="member w-full h-full flex flex-col md:flex-row bg-white shadow-lg rounded-lg p-4">
               <div className="w-full md:w-1/2 flex items-center justify-center mb-4 md:mb-0">
                 <img
-                  src={member1}
+                  src={member2}
                   alt="Member 2"
                   className="w-full h-3/4 object-cover rounded-md"
                 />

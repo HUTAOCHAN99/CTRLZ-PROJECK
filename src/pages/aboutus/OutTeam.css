@@ -1,14 +1,13 @@
 /* OurTeam.css */
 
 .open {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 1s ease, transform 1s ease;
-  }
-  
-  .close {
-    opacity: 0;
-    transform: translateY(-20px); /* Atur efek menurun */
-    transition: opacity 1s ease, transform 1s ease;
-  }
-  
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 2s ease, transform 2s ease-in-out; 
+}
+
+.close {
+  opacity: 0;
+  transform: translateY(-20px); 
+  transition: opacity 1s ease, transform 2s ease-in-out; 
+}
