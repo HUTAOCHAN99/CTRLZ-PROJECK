@@ -16,7 +16,7 @@ export default function Content() {
 
       {/* Navigation Buttons */}
       {/* Hide on sm and md screens */}
-      <nav className="bg-white shadow-md p-4 flex justify-center space-x-6 text-gray-400 font-semibold hidden sm:hidden md:flex">
+      <nav className="bg-white shadow-md p-4 flex justify-center space-x-6 text-gray-400 font-semibold sm:hidden md:flex">
         <button className="hover:text-slate-900 transition duration-300">
           Intro
         </button>

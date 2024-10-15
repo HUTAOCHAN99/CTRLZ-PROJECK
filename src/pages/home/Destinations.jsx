@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import DestinationList from "@/components/DestinationList";
 
+
 export default function Destinations() {
   const [sortOption, setSortOption] = useState("recommended");
   const [showAll, setShowAll] = useState(false);

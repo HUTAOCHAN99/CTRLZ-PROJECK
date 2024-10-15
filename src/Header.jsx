@@ -55,7 +55,7 @@ export default function Header() {
                   </Link>
                 </li>
                 <li className="group">
-                  <Link to="/#destinasi" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
+                  <Link to="/Destinations" className="text-base text-dark py-2 flex mx-8 group-hover:text-primary">
                     Destinasi
                   </Link>
                 </li>
