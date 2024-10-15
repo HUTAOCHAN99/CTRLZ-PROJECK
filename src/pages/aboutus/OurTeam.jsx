@@ -4,8 +4,7 @@ import teamLogo from "@/img/logo_team.jpg";
 import member1 from "@/img/m-1.jpg";
 import member2 from "@/img/m-2.jpg";
 import member3 from "@/img/m-3.jpg";
-
-
+import "/src/pages/aboutus/OutTeam.css";
 export default function OurTeam() {
   const [isExpanded, setIsExpanded] = useState(false);
   const meetOurTeamRef = useRef(null);
@@ -17,11 +16,11 @@ export default function OurTeam() {
       if (newExpandedState) {
         setTimeout(() => {
           meetOurTeamRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, 200);
+        }, 500);
       } else {
         setTimeout(() => {
           window.scrollTo({ top: 0, behavior: "smooth" });
-        }, 100);
+        }, 500);
       }
       return newExpandedState;
     });
