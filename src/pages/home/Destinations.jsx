@@ -1,5 +1,5 @@
 import { Outlet, ScrollRestoration } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDestinations } from "@/firebase";
 import {
   Select,
@@ -11,25 +11,35 @@ import {
 import { Button } from "@/components/ui/button";
 import DestinationList from "@/components/DestinationList";
 
+function getVisitCount(destination) {
+  return destination.visitCount ? destination.visitCount : 0;
+}
+
 export default function Destinations() {
   const [sortOption, setSortOption] = useState("recommended");
   const [showAll, setShowAll] = useState(false);
 
   const { loading, data, error } = useDestinations();
 
-  const sortedDestinations = data
-    ? data.sort((a, b) => {
+  const displayedDestinations = useMemo(() => {
+    if (!data) return []
+
+    const res = [...data];
+
+    if (sortOption != "recommended")
+      res.sort((a, b) => {
         if (sortOption === "rating") {
           return b.rating - a.rating; // Urut berdasarkan rating
-        } else if (sortOption === "reviews") {
-          return b.reviews - a.reviews; // Urut berdasarkan jumlah ulasan (most viewed)
+        } else if (sortOption === "most-view") {
+          return getVisitCount(b) - getVisitCount(a);
         }
         return 0; // Tidak ada urutan khusus
       })
-    : [];
-  const displayedDestinations = showAll
-    ? sortedDestinations
-    : sortedDestinations.slice(0, 12);
+
+    return showAll
+      ? res
+      : res.slice(0, 12);
+  }, [data, sortOption, showAll]);
 
   return (
     <div className="container mx-auto px-4 py-6" id="destinasi">
@@ -40,8 +50,8 @@ export default function Destinations() {
           {loading
             ? "Loading"
             : error
-            ? `Error: ${error}`
-            : "Top attractions in Yogyakarta"}
+              ? `Error: ${error}`
+              : "Top attractions in Yogyakarta"}
         </h2>
 
         {!loading && !error && data && (
@@ -58,7 +68,7 @@ export default function Destinations() {
                 <SelectContent>
                   <SelectItem value="recommended">Recommended</SelectItem>
                   <SelectItem value="rating">By Rating</SelectItem>
-                  <SelectItem value="reviews">Most Viewed</SelectItem>
+                  <SelectItem value="most-view">Most Viewed</SelectItem>
                 </SelectContent>
               </Select>
             </div>
