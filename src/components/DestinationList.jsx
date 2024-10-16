@@ -27,7 +27,7 @@ function Destination({ destination, createLink }) {
             {destination.avgRating && <Rating value={destination.avgRating} readOnly />}
           </div>
           <div className="text-gray-500 text-sm">
-            ({destination.reviews ? `${destination.reviews}} reviews` : "no reviews yet"})
+            ({destination.numRating ? `${destination.numRating} reviews` : "no reviews yet"})
           </div>
         </div>
       </div>
