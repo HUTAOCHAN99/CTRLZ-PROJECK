@@ -15,7 +15,7 @@ import { useAuth } from "@/firebase/AuthContext";
 function DestinationPanoramasItem({ destinationId, panorama }) {
   return (
     <div>
-      <h3>{panorama.name}</h3>
+      <h3 className="text-center text-lg font-semibold mt-8 mb-4">{panorama.name}</h3>
       <DestinationPanoramaViewer destinationId={destinationId} panoramaId={panorama.id} />
     </div>
   );
@@ -26,7 +26,7 @@ function DestionationPanoramas({ id }) {
 
   return (
     <div className="container">
-      <h2>Panorama</h2>
+      <h2 className="text-2xl font-semibold text-center">Panorama</h2>
 
       {state.loading ? (
         <p className="text-center">Memuat...</p>
@@ -78,7 +78,7 @@ function DestinationRatingLogged({ id }) {
   }
 
   return <Form {...form}>
-    <form className="container max-w-96" onSubmit={form.handleSubmit(onSubmit)}>
+    <form className="container max-w-96 mt-8" onSubmit={form.handleSubmit(onSubmit)}>
       <Card>
         <CardHeader>
           <CardTitle>Berikan Rating Anda</CardTitle>
@@ -110,7 +110,7 @@ function DestinationRatingLogged({ id }) {
 }
 
 function DestinationNotLoggedIn() {
-  return <div className="container max-w-96"><Card>
+  return <div className="container max-w-96 mt-8"><Card>
     <CardHeader>
       <CardTitle>Berikan Rating Anda</CardTitle>
       <CardDescription>Anda belum bisa memberikan rating</CardDescription>
