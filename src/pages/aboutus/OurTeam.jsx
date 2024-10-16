@@ -65,7 +65,9 @@ export default function OurTeam() {
         className="absolute bottom-16 left-1/2 transform -translate-x-1/2 text-gray-800 text-3xl hover:text-gray-600 transition duration-300 flex items-center"
       >
         <i className={`fas fa-chevron-${isExpanded ? "up" : "down"} mr-2`}></i>
-        {isExpanded ? "Tutup Tim" : "Lihat Tim"}
+        <span className="hidden md:inline">
+          {isExpanded ? "Tutup Tim" : "Lihat Tim"}
+        </span>
       </button>
 
       <div
@@ -122,7 +124,7 @@ export default function OurTeam() {
                   >
                     <i className="fab fa-facebook fa-2x"></i>
                   </a>
-                  
+
                   <a
                     href="https://github.com/HUTAOCHAN99
 "
@@ -176,7 +178,7 @@ export default function OurTeam() {
                   >
                     <i className="fab fa-instagram fa-2x"></i>
                   </a>
-                  
+
                   <a
                     href="https://github.com/levirs565 "
                     target="_blank"

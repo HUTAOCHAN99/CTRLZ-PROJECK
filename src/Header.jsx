@@ -51,7 +51,7 @@ export default function Header() {
           <div className="">
             <a
               href="#home"
-              className="font-bold text-lg text-primary block py-6 sm:py-1 lg:py-6"
+              className="font-bold text-lg text-primary block py-6 sm:py-2 lg:py-6"
             >
               <img src={img} alt="" width="100px" />
             </a>
