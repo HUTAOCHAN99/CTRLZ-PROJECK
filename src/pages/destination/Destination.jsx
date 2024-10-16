@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Detail from "./Detail";
 import { useParams } from "react-router-dom";
-import { useDestinationsPanorama } from "@/firebase";
+import { incrementDestinationVisitCount, useDestinationsPanorama } from "@/firebase";
 import { DestinationPanoramaViewer } from "@/components/Panorama";
 
 function DestinationPanoramasItem({ destinationId, panorama }) {
@@ -43,6 +43,10 @@ function DestionationPanoramas({ id }) {
 
 export function Destination() {
   const { id } = useParams();
+
+  useEffect(() => {
+    incrementDestinationVisitCount(id);
+  }, [])
 
   return (
     <>

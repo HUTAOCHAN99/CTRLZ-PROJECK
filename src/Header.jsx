@@ -22,7 +22,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white sticky top-0 w-full flex items-center z-10 shadow-lg mb-8">
+    <header className="bg-white sticky top-0 w-full flex items-center z-100 shadow-lg mb-8">
       <div className="container px-4">
         <div className="flex items-center relative">
           <button
@@ -49,12 +49,12 @@ export default function Header() {
             ></span>
           </button>
           <div className="">
-            <a
-              href="#home"
+            <Link
+              to="/"
               className="font-bold text-lg text-primary block py-6 sm:py-2 lg:py-6"
             >
               <img src={img} alt="" width="100px" />
-            </a>
+            </Link>
           </div>
           <div className="flex items-center px-4">
             <nav
