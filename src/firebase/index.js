@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where, addDoc, getDoc, doc, setDoc, deleteDoc, FieldValue, increment, updateDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, addDoc, getDoc, doc, setDoc, deleteDoc, FieldValue, increment, updateDoc, runTransaction } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
@@ -61,11 +61,15 @@ const usePendingData = (func, mapper) => {
         refresh();
     }, []);
 
-    return {state, refresh};
+    return { state, refresh };
+}
+
+const useDocInternal = (doc) => {
+    return usePendingData(() => getDoc(doc), (value) => ({ id: value.id, ...value.data() }));
 }
 
 const useDoc = (doc) => {
-    return usePendingData(() => getDoc(doc), (value) => ({ id: value.id, ...value.data() })).state
+    return useDocInternal(doc).state
 }
 
 const useDocsInternal = (query) => {
@@ -89,6 +93,39 @@ export const incrementDestinationVisitCount = (id) => {
     return updateDoc(doc(destinationsRef, id), {
         visitCount: increment(1)
     });
+}
+
+const getReviewDocRef = (id) => doc(destinationsRef, id, "reviews", auth.currentUser.uid)
+
+export const useDestinationUserRating = (id) => {
+    return useDocInternal(getReviewDocRef(id))
+}
+
+export const useSubmitRating = (id) => {
+    return useAction(async (data) => {
+        await runTransaction(database, async (transaction) => {
+            const destinationDoc = (await transaction.get(doc(destinationsRef, id))).data();
+
+            let numRating = destinationDoc.numRating ? destinationDoc.numRating : 0;
+            let sumRating = destinationDoc.sumRating ? destinationDoc.sumRating : 0;
+
+            const oldRatingDoc = await transaction.get(getReviewDocRef(id));
+
+            if (oldRatingDoc.exists()) {
+                const doc = oldRatingDoc.data();
+
+                if (doc.rating) {
+                    numRating--;
+                    sumRating -= doc.rating;
+                }
+            }
+
+            numRating++;
+            sumRating += data.rating;
+            await transaction.set(doc(destinationsRef, id), { numRating, sumRating, avgRating: sumRating / numRating }, {merge: true});
+            await transaction.set(getReviewDocRef(id), data, { merge: true })
+        });
+    })
 }
 
 export const useMyDestination = () => {
@@ -152,8 +189,8 @@ export const useEditDestination = () => {
     }
 };
 
-export function useDeleteDestination(id){
-    const {isLoading, runAction} = useAction(async () => {
+export function useDeleteDestination(id) {
+    const { isLoading, runAction } = useAction(async () => {
         return await deleteDoc(doc(database, "destinations", id));
     })
     return {
@@ -177,7 +214,7 @@ export const useUploadDestinationImage = (id) => {
 }
 
 export const useDestinationImageUrl = (id) => {
-    const {state, refresh} = usePendingData(async () => {
+    const { state, refresh } = usePendingData(async () => {
         try {
             return await getDownloadURL(getDestinationImageRef(id));
         } catch (error) {
@@ -238,7 +275,7 @@ export const useEditDestinationsPanorama = (id, panoramaId) => {
 }
 
 export function useDestinationPanoramaUrl(destinationId, panoramaId) {
-    const {state, refresh} = usePendingData(async () => {
+    const { state, refresh } = usePendingData(async () => {
         try {
             return await getDownloadURL(getPanoramasImageRef(destinationId, panoramaId));
         } catch (error) {
