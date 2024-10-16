@@ -11,6 +11,10 @@ export default {
   		padding: '16px'
   	},
   	extend: {
+		zIndex: {
+			'100': '100',
+			'150': '150'
+		},
   		colors: {
   			primary: '#14b8a6',
   			dark: '#0f172a',
