@@ -15,6 +15,10 @@ function getVisitCount(destination) {
   return destination.visitCount ? destination.visitCount : 0;
 }
 
+function getAvgRating(destination) {
+  return destination.avgRating ? destination.avgRating : 0;
+}
+
 export default function Destinations() {
   const [sortOption, setSortOption] = useState("recommended");
   const [showAll, setShowAll] = useState(false);
@@ -29,7 +33,7 @@ export default function Destinations() {
     if (sortOption != "recommended")
       res.sort((a, b) => {
         if (sortOption === "rating") {
-          return b.rating - a.rating; // Urut berdasarkan rating
+          return getAvgRating(b) - getAvgRating(a);
         } else if (sortOption === "most-view") {
           return getVisitCount(b) - getVisitCount(a);
         }
