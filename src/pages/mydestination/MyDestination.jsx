@@ -1,4 +1,4 @@
-import DestinationList from "@/components/DestinationList";
+import DestinationList, { DestinationListSkeleton } from "@/components/DestinationList";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -40,9 +40,10 @@ export function MyDestinationContent() {
 
             </div>
 
-            {loading ? <p className="text-center">Memuat...</p> :
-                error ? <p className="text-center">Gagal Memuat {error}</p>
-                    : data.length == 0 ? <p className="text-center mb-80">Masih kosong</p> : <DestinationList list={data} createLink={({ id }) => `/mydestination/${id}`} />}
+            {loading && !error && <DestinationListSkeleton count={9} />}
+            {error && <p className="text-center">Gagal Memuat {error}</p>}
+            {data && (data.length == 0 ? <p className="text-center mb-80">Masih kosong</p>
+                : <DestinationList list={data} createLink={({ id }) => `/mydestination/${id}`} />)}
         </div>
     </>
 }

@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import DestinationList from "@/components/DestinationList";
+import DestinationList, { DestinationListSkeleton } from "@/components/DestinationList";
 
 export default function Destinations() {
   const { loading, data, error } = useTopDestinations();
@@ -26,7 +26,11 @@ export default function Destinations() {
               : "Top attractions in Yogyakarta"}
         </h2>
 
-        {!loading && !error && data && (
+        {error && <p>Data gagal dimuat. {error}</p>}
+
+        {!error && loading && <DestinationListSkeleton count={3}/>}
+
+        {!error && !loading && data && (
           <>
             <DestinationList
               list={data}
