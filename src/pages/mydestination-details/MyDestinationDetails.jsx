@@ -34,7 +34,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 import { DestinationPanoramaViewer, PanoramaSkeleton } from "@/components/Panorama";
 import {
@@ -47,6 +47,7 @@ import { RiMenu2Fill, RiMore2Fill } from "@remixicon/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import brokenImg from "@/img/Image_not_available.png"
+import { useAuth } from "@/firebase/AuthContext";
 
 function DestinationInformationSkeleton() {
   return (
@@ -629,12 +630,14 @@ function MyDestinationDetailsContent({ id, data }) {
 export function MyDestinationDetails(props) {
   const params = useParams();
   const { loading, data, error } = useDestinationById(params.id);
+  const auth = useAuth();
 
-  if (loading)
+  if (loading || auth == null)
     return <MyDestinationDetailsContentSkeleton />;
   if (error) return <div className="mx-auto">
     <p className="text-center">Gagal Memuat {error}</p>
   </div>;
+  if (data.userUid != auth.uid) return <Navigate to="/mydestination"/>
 
   return <MyDestinationDetailsContent id={params.id} data={data} />;
 }
