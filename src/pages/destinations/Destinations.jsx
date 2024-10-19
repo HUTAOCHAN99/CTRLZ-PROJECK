@@ -1,4 +1,4 @@
-import DestinationList from "@/components/DestinationList";
+import DestinationList, { DestinationListSkeleton } from "@/components/DestinationList";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -107,24 +107,20 @@ export function Destinations() {
         <div className="container mx-auto px-4 py-6" id="destinasi">
             <div className="container mx-auto px-4 py-6">
                 <h2 className="text-3xl font-bold mb-4">
-                    {loading
-                        ? "Loading"
-                        : error
-                            ? `Error: ${error}`
-                            : "Destinations"}
+                    Destinations
                 </h2>
 
                 <Card className="sticky top-24 bg-white p-4 px-4 z-50 mb-4">
                     <DestinationHeader kabupaten={kabupaten} onKabupatenChanged={setKabupaten} search={search} onSearchChanged={setSearch} sortOption={sortOption} onSortOptionChanged={setSortOption} />
                 </Card>
 
+                {error && <p>Data gagal dimuat. {error}</p>}
+                {loading && !error && <DestinationListSkeleton count={9} />}
                 {!loading && !error && data && (
-                    <>
-                        <DestinationList
-                            list={displayedDestinations}
-                            createLink={({ id }) => `/destination/${id}`}
-                        />
-                    </>
+                    <DestinationList
+                        list={displayedDestinations}
+                        createLink={({ id }) => `/destination/${id}`}
+                    />
                 )}
             </div>
         </div>
