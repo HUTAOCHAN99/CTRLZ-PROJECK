@@ -11,9 +11,9 @@ export default function Footer() {
     {
       title: "Destinasi",
       items: [
-        { name: "Candi Prambanan", href: "#" },
-        { name: "Malioboro", href: "#" },
-        { name: "Taman Sari", href: "#" },
+        { name: "Candi Prambanan", href: "/destination/XekG04PxXQRbxIPxKwpl" },
+        { name: "Pantai Parangtritis", href: "/destination/dTy8DbNfYd3zlueyllsa" },
+        { name: "Masjid Gede Kauman", href: "/destination/k4nOfn7zBrCoUHwKaO9F" },
       ],
     },
     {

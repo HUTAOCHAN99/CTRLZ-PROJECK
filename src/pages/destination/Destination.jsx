@@ -203,9 +203,7 @@ function DestinationRating({ id }) {
   return auth ? <DestinationRatingLogged id={id} /> : <DestinationNotLoggedIn />;
 }
 
-// Komponen Utama Destination
-export function Destination() {
-  const { id } = useParams();
+function DestinationContent({ id }) {
   const [success, setSuccess] = useState("loading");
 
   useEffect(() => {
@@ -215,11 +213,18 @@ export function Destination() {
   return (
     <>
       <Detail onLoadingFinish={() => setSuccess(true)} id={id} />
-      {success == "loading" && <DestinationPanoramasSkeletonFull/>}
+      {success == "loading" && <DestinationPanoramasSkeletonFull />}
       {success == true && <>
         <DestinationPanoramas id={id} />
         <DestinationRating id={id} />
       </>}
     </>
   );
+}
+
+// Komponen Utama Destination
+export function Destination() {
+  const { id } = useParams();
+
+  return <DestinationContent key={id} id={id} />
 }
