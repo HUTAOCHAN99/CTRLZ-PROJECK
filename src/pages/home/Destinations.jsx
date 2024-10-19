@@ -42,7 +42,7 @@ export default function Destinations() {
 
     return showAll
       ? res
-      : res.slice(0, 12);
+      : res.slice(0, 6);
   }, [data, sortOption, showAll]);
 
   return (
