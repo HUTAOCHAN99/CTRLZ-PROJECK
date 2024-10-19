@@ -53,12 +53,12 @@ function DetailContent({ id, data }) {
   </>
 }
 
-export default function Detail({ id, onLoadingSuccess }) {
+export default function Detail({ id, onLoadingFinish }) {
   const { loading, error, data } = useDestinationById(id);
 
   useEffect(() => {
-    if (!loading && !error && data) {
-      onLoadingSuccess();
+    if (!loading) {
+      onLoadingFinish(!!error);
     }
   }, [loading, error, data])
 

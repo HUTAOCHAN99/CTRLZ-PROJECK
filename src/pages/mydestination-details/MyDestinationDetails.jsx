@@ -293,7 +293,7 @@ function DestinationPanoramasItem({ destinationId, panorama, onRefresh }) {
     <li>
       <Card>
         <CardHeader className="flex flex-row justify-between items-center">
-          <CardTitle>{panorama.name}</CardTitle>
+          <CardTitle className="text-lg font-semibold">{panorama.name}</CardTitle>
 
           <DestinationDeletePanoDialog
             open={deleteOpen}
