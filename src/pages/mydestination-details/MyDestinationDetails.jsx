@@ -627,9 +627,8 @@ function MyDestinationDetailsContent({ id, data }) {
   );
 }
 
-export function MyDestinationDetails(props) {
-  const params = useParams();
-  const { loading, data, error } = useDestinationById(params.id);
+function MyDestinationDetailsWrapper({ id }) {
+  const { loading, data, error } = useDestinationById(id);
   const auth = useAuth();
 
   if (loading || auth == null)
@@ -637,7 +636,13 @@ export function MyDestinationDetails(props) {
   if (error) return <div className="mx-auto">
     <p className="text-center">Gagal Memuat {error}</p>
   </div>;
-  if (data.userUid != auth.uid) return <Navigate to="/mydestination"/>
+  if (data.userUid != auth.uid) return <Navigate to="/mydestination" />
 
-  return <MyDestinationDetailsContent id={params.id} data={data} />;
+  return <MyDestinationDetailsContent id={id} data={data} />;
+}
+
+export function MyDestinationDetails(props) {
+  const { id } = useParams();
+
+  return <MyDestinationDetailsWrapper id={id} key={id} />
 }
