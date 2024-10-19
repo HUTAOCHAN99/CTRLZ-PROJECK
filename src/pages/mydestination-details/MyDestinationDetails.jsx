@@ -101,58 +101,60 @@ const schema = z.object({
 });
 
 function DestinationImage({ id }) {
-    const { url, refresh } = useDestinationImageUrl(id);
-    const { isLoading, uploadDestinationImage } = useUploadDestinationImage(id);
-    const form = useForm({
-        resolver: zodResolver(schema),
-        defaultValues: { image: "" }
-    });
+  const { url, refresh } = useDestinationImageUrl(id);
+  const { isLoading, uploadDestinationImage } = useUploadDestinationImage(id);
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: { image: "" },
+  });
 
-    function onSubmit(value) {
-        uploadDestinationImage(value.image).then(() => refresh());
-    }
+  function onSubmit(value) {
+    uploadDestinationImage(value.image).then(() => refresh());
+  }
 
-    return (
-        <div className="mb-8 p-4 border rounded-lg bg-white shadow-sm">
-            <h2 className="text-xl font-semibold mb-4">Gambar</h2>
-            {url.loading ? (
-                <p className="text-center">Memuat...</p>
-            ) : url.error ? (
-                <p className="text-center">Gagal Memuat {url.error}</p>
-            ) : url.data == null ? (
-                <p className="text-center">Masih kosong</p>
-            ) : (
-                <img src={url.data} className="w-full h-auto mb-4" alt="Destination" />
+  return (
+    <div className="mb-8 p-4 border rounded-lg bg-white shadow-sm">
+      <h2 className="text-xl font-semibold mb-4">Gambar</h2>
+      {url.loading ? (
+        <p className="text-center">Memuat...</p>
+      ) : url.error ? (
+        <p className="text-center">Gagal Memuat {url.error}</p>
+      ) : url.data == null ? (
+        <p className="text-center">Masih kosong</p>
+      ) : (
+        <img src={url.data} className="w-[320px] h-auto mb-4" alt="Destination" />
+      )}
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    ref={field.ref}
+                    disabled={field.disabled}
+                    name={field.name}
+                    onBlur={field.onBlur}
+                    onChange={(e) => field.onChange(e.target.files?.[0])}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="image"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Image</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="file"
-                                        accept="image/*"
-                                        ref={field.ref}
-                                        disabled={field.disabled}
-                                        name={field.name}
-                                        onBlur={field.onBlur}
-                                        onChange={(e) => field.onChange(e.target.files?.[0])}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <Button type="submit" className="w-full">Ganti</Button>
-                </form>
-            </Form>
-        </div>
-    );
+          />
+          <Button type="submit" className="w-full">
+            Ganti
+          </Button>
+        </form>
+      </Form>
+    </div>
+  );
 }
 
 const MAX_PANORAMA_UPLOAD_SIZE = 1024 * 1024 * 10;
@@ -311,6 +313,7 @@ function PanoramaDialog({
       }
     });
   }
+  // form tambah destinasi
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {children}
@@ -433,8 +436,16 @@ function Content({ destination }) {
   return (
     <>
       <div className="space-y-8">
-        <DestinationInformation destination={destination} />
-        <DestinationImage id={destination.id} />
+        {/* Grid layout untuk lg dan xl, dan satu kolom untuk md ke bawah */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+          {/* Gunakan flex di dalam grid untuk memastikan tinggi kedua bagian sama */}
+          <div className="flex flex-col lg:col-span-1 h-full">
+            <DestinationInformation destination={destination} />
+          </div>
+          <div className="flex flex-col lg:col-span-1 h-full">
+            <DestinationImage id={destination.id} />
+          </div>
+        </div>
         <DestinationPanoramas id={destination.id} />
       </div>
     </>
