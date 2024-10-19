@@ -82,7 +82,7 @@ const useDocs = (query) => {
 }
 
 export const useDestinations = () => {
-    return useDocs(query(destinationsRef, orderBy("numRating", "desc"), orderBy("avgRating", "desc")));
+    return useDocs(destinationsRef);
 }
 
 export const useTopDestinations = () => {

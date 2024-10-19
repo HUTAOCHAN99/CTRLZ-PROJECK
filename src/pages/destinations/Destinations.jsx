@@ -49,6 +49,11 @@ function getAvgRating(destination) {
     return destination.avgRating ? destination.avgRating : 0;
 }
 
+function getNumRating(destination) {
+    return destination.numRating ? destination.numRating : 0;
+}
+
+
 export function Destinations() {
     const [searchParam, setSearchParam] = useSearchParams();
     const { loading, data, error } = useDestinations();
@@ -76,15 +81,19 @@ export function Destinations() {
             res = res.filter((value) => value.kabupaten == kabupaten)
         }
 
-        if (sortOption != "recommended")
-            res.sort((a, b) => {
-                if (sortOption === "rating") {
-                    return getAvgRating(b) - getAvgRating(a);
-                } else if (sortOption === "most-view") {
-                    return getVisitCount(b) - getVisitCount(a);
-                }
-                return 0; // Tidak ada urutan khusus
-            })
+
+        res.sort((a, b) => {
+            if (sortOption === "recommended") {
+                if (getNumRating(b) != getNumRating(a))
+                    return getNumRating(b) - getNumRating(a);
+                return getAvgRating(b) - getAvgRating(a);
+            } else if (sortOption === "rating") {
+                return getAvgRating(b) - getAvgRating(a);
+            } else if (sortOption === "most-view") {
+                return getVisitCount(b) - getVisitCount(a);
+            }
+            return 0; // Tidak ada urutan khusus
+        })
 
         return res;
     }, [data, sortOption, debouncedSearch, kabupaten]);
