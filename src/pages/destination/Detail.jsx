@@ -6,7 +6,7 @@ export default function Detail({ id }) {
   const { loading, error, data } = useDestinationById(id);
   const { url } = useDestinationImageUrl(id);
   return (
-    <div className="detail-container mx-auto mt-32 p-4">
+    <div className="detail-container mx-auto mt-8 p-4">
       {loading ? (
         <p className="text-center">Memuat...</p>
       ) : error ? (
@@ -37,7 +37,7 @@ export default function Detail({ id }) {
             />
           </div>
 
-          <p className="text-xl text-gray-600 text-center mt-4">
+          <p className="text-xl text-gray-600 text-justify p-8 mt-4">
             {data.description}
           </p>
 
