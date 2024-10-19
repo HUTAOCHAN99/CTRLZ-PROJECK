@@ -7,7 +7,7 @@ service firebase.storage {
   match /b/{bucket}/o {
     match /destinations/{destination}/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null && request.auth.uid == firestore.get( /databases/(default)/documents/destinations/$(destination)).userUid
+      allow write: if request.auth != null && request.auth.uid == firestore.get(/databases/(default)/documents/destinations/$(destination)).data.userUid
     }
   }
 }
