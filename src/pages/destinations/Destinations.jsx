@@ -1,4 +1,5 @@
 import DestinationList from "@/components/DestinationList";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useDestinations } from "@/firebase";
@@ -9,7 +10,7 @@ import { useDebounce } from "use-debounce";
 function DestinationHeader({ search, onSearchChanged, sortOption, onSortOptionChanged, kabupaten, onKabupatenChanged }) {
     const searchDispatcher = useRef(0);
 
-    return <div className="flex flex-col gap-2 mb-4 md:flex-row">
+    return <div className="flex flex-col gap-2 md:flex-row">
         <Input value={search} onChange={(event) => onSearchChanged(event.target.value)}></Input>
         <div className="flex flex-row gap-2">
             <div className="grow md:grow-0"></div>
@@ -91,7 +92,9 @@ export function Destinations() {
                             : "Destinations"}
                 </h2>
 
-                <DestinationHeader kabupaten={kabupaten} onKabupatenChanged={setKabupaten} search={search} onSearchChanged={setSearch} sortOption={sortOption} onSortOptionChanged={setSortOption} />
+                <Card className="sticky top-24 bg-white p-4 px-4 z-50 mb-4">
+                    <DestinationHeader kabupaten={kabupaten} onKabupatenChanged={setKabupaten} search={search} onSearchChanged={setSearch} sortOption={sortOption} onSortOptionChanged={setSortOption} />
+                </Card>
 
                 {!loading && !error && data && (
                     <>
