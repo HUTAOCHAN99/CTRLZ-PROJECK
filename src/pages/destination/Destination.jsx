@@ -168,6 +168,7 @@ function DestinationRating({ id }) {
 // Komponen Utama Destination
 export function Destination() {
   const { id } = useParams();
+  const [showRating, setShowRating] = useState(false);
 
   useEffect(() => {
     incrementDestinationVisitCount(id);
@@ -175,9 +176,10 @@ export function Destination() {
 
   return (
     <>
-      <Detail id={id} />
+      <Detail onLoadingSuccess={() => setShowRating(true)} id={id} />
       <DestinationPanoramas id={id} />
-      <DestinationRating id={id} />
+      {showRating &&
+        <DestinationRating id={id} />}
     </>
   );
 }
