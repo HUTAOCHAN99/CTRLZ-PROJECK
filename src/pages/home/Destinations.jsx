@@ -1,6 +1,6 @@
 import { Link, Outlet, ScrollRestoration } from "react-router-dom";
 import { useMemo, useState } from "react";
-import { useDestinations } from "@/firebase";
+import { useDestinations, useTopDestinations } from "@/firebase";
 import {
   Select,
   SelectContent,
@@ -12,30 +12,7 @@ import { Button } from "@/components/ui/button";
 import DestinationList from "@/components/DestinationList";
 
 export default function Destinations() {
-  const [sortOption, setSortOption] = useState("recommended");
-  const [showAll, setShowAll] = useState(false);
-
-  const { loading, data, error } = useDestinations();
-
-  const displayedDestinations = useMemo(() => {
-    if (!data) return []
-
-    const res = [...data];
-
-    if (sortOption != "recommended")
-      res.sort((a, b) => {
-        if (sortOption === "rating") {
-          return getAvgRating(b) - getAvgRating(a);
-        } else if (sortOption === "most-view") {
-          return getVisitCount(b) - getVisitCount(a);
-        }
-        return 0; // Tidak ada urutan khusus
-      })
-
-    return showAll
-      ? res
-      : res.slice(0, 6);
-  }, [data, sortOption, showAll]);
+  const { loading, data, error } = useTopDestinations();
 
   return (
     <div className="container mx-auto px-4 py-6" id="destinasi">
@@ -52,7 +29,7 @@ export default function Destinations() {
         {!loading && !error && data && (
           <>
             <DestinationList
-              list={displayedDestinations}
+              list={data}
               createLink={({ id }) => `/destination/${id}`}
             />
 
