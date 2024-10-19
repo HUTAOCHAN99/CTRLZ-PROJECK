@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useDestinations } from "@/firebase";
 import { cities } from "@/util";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createSearchParams, useParams, useSearchParams } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 
 function DestinationHeader({ search, onSearchChanged, sortOption, onSortOptionChanged, kabupaten, onKabupatenChanged }) {
@@ -49,10 +50,11 @@ function getAvgRating(destination) {
 }
 
 export function Destinations() {
+    const [searchParam, setSearchParam] = useSearchParams();
     const { loading, data, error } = useDestinations();
-    const [search, setSearch] = useState("");
-    const [kabupaten, setKabupaten] = useState("All");
-    const [sortOption, setSortOption] = useState("recommended");
+    const [search, setSearch] = useState(searchParam.has("q") ? searchParam.get("q") : "");
+    const [kabupaten, setKabupaten] = useState(searchParam.has("kabupaten") ? searchParam.get("kabupaten") : "All");
+    const [sortOption, setSortOption] = useState(searchParam.get("sort") ? searchParam.get("sort") : "recommended");
     const [debouncedSearch] = useDebounce(search, 1000)
 
     const displayedDestinations = useMemo(() => {
@@ -80,6 +82,20 @@ export function Destinations() {
 
         return res;
     }, [data, sortOption, debouncedSearch, kabupaten]);
+
+    useEffect(() => {
+        const queries = {};
+        if (search) {
+            queries["q"] = search;
+        }
+        if (kabupaten != "All") {
+            queries["kabupaten"] = kabupaten;
+        }
+        if (sortOption != "recommended") {
+            queries["sort"] = sortOption;
+        }
+        setSearchParam(createSearchParams(queries))
+    }, [sortOption, search, kabupaten])
 
     return (
         <div className="container mx-auto px-4 py-6" id="destinasi">
