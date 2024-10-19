@@ -267,10 +267,6 @@ function DestinationPanoramasItemSkeleton({ }) {
           <Skeleton className="w-10 h-10" />
         </CardHeader>
         <CardContent>
-          <div className="">
-
-          </div>
-
           <div className="flex justify-center">
             <PanoramaSkeleton />
           </div>
@@ -312,13 +308,16 @@ function DestinationPanoramasItem({ destinationId, panorama, onRefresh }) {
               setTimeout(() => {
                 setShowPano(false);
                 setTimeout(() => {
+                  onRefresh();
                   setShowPano(true);
                 }, 100);
               }, 100);
             }}
             title="Edit Panorama"
             submitText="Edit"
-            onSubmit={(value) => editPanorama(value)}
+            onSubmit={(value) =>
+              editPanorama(value)
+            }
             schema={panoramaEditSchema}
           />
 
