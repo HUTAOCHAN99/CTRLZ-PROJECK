@@ -14,9 +14,8 @@ function DestinationHeader({ search, onSearchChanged, sortOption, onSortOptionCh
     return <div className="flex flex-col gap-2 md:flex-row">
         <Input value={search} onChange={(event) => onSearchChanged(event.target.value)}></Input>
         <div className="flex flex-row gap-2">
-            <div className="grow md:grow-0"></div>
             <Select value={kabupaten} onValueChange={onKabupatenChanged}>
-                <SelectTrigger className="w-40 shrink-0">
+                <SelectTrigger className="flex-grow truncate md:flex-grow-0 md:w-40 md:shrink-0">
                     <SelectValue placeholder="Kabupaten" />
                 </SelectTrigger>
                 <SelectContent>
@@ -28,7 +27,7 @@ function DestinationHeader({ search, onSearchChanged, sortOption, onSortOptionCh
                 value={sortOption}
                 onValueChange={onSortOptionChanged}
             >
-                <SelectTrigger className="w-36 shrink-0">
+                <SelectTrigger className="flex-grow truncate md:flex-grow-0 md:w-36 md:shrink-0">
                     <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
