@@ -74,7 +74,7 @@ export function Destinations() {
         let res = [...data];
 
         if (debouncedSearch) {
-            res = res.filter((value) => value.name.includes(debouncedSearch))
+            res = res.filter((value) => value.name.toLowerCase().includes(debouncedSearch.toLowerCase()))
         }
 
         if (kabupaten != "All") {
