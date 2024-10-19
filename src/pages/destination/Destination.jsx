@@ -206,13 +206,12 @@ function DestinationRating({ id }) {
 function DestinationContent({ id }) {
   const [success, setSuccess] = useState("loading");
 
-  useEffect(() => {
-    incrementDestinationVisitCount(id);
-  }, [id]);
-
   return (
     <>
-      <Detail onLoadingFinish={() => setSuccess(true)} id={id} />
+      <Detail onLoadingFinish={() => {
+        setSuccess(true);
+        incrementDestinationVisitCount(id);
+      }} id={id} />
       {success == "loading" && <DestinationPanoramasSkeletonFull />}
       {success == true && <>
         <DestinationPanoramas id={id} />
