@@ -51,7 +51,7 @@ export default function Header() {
           <div className="">
             <Link
               to="/"
-              className="font-bold text-lg text-primary block py-6 sm:py-2 lg:py-6"
+              className="font-bold text-lg text-primary block py-2"
             >
               <img src={img} alt="" width="100px" />
             </Link>
@@ -59,7 +59,7 @@ export default function Header() {
           <div className="flex items-center px-4">
             <nav
               id="nav-menu"
-              className={`absolute py-5 bg-white shadow-lg rounded-lg max-w-[250px] w-full left-4 top-full lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none transition-all duration-300 ease-in-out ${
+              className={`absolute bg-white shadow-lg rounded-lg max-w-[250px] w-full left-4 top-full lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none transition-all duration-300 ease-in-out ${
                 isOpen ? "block" : "hidden"
               }`}
             >

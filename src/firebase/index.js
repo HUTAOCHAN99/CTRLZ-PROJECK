@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where, addDoc, getDoc, doc, setDoc, deleteDoc, FieldValue, increment, updateDoc, runTransaction } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, addDoc, getDoc, doc, setDoc, deleteDoc, FieldValue, increment, updateDoc, runTransaction, orderBy, limit } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
@@ -83,6 +83,10 @@ const useDocs = (query) => {
 
 export const useDestinations = () => {
     return useDocs(destinationsRef);
+}
+
+export const useTopDestinations = () => {
+    return useDocs(query(destinationsRef, orderBy("numRating", "desc"), orderBy("avgRating", "desc"), limit(3)))
 }
 
 export const useDestinationById = (id) => {
