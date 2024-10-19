@@ -7,7 +7,7 @@ import {
   useDestinationUserRating,
   useSubmitRating,
 } from "@/firebase";
-import { DestinationPanoramaViewer } from "@/components/Panorama";
+import { DestinationPanoramaViewer, PanoramaSkeleton } from "@/components/Panorama";
 import {
   Card,
   CardContent,
@@ -30,6 +30,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useAuth } from "@/firebase/AuthContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Komponen Item Panorama
 function DestinationPanoramasItem({ destinationId, panorama }) {
@@ -41,22 +42,47 @@ function DestinationPanoramasItem({ destinationId, panorama }) {
   );
 }
 
+function DestinationPanoramasItemSkeleton() {
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <Skeleton className="text-center text-lg font-semibold mt-8 mb-4 h-6 w-full"/>
+      <PanoramaSkeleton/>
+    </div>
+  );
+}
+
+
 // Komponen Menampilkan Daftar Panorama
 function DestinationPanoramas({ id }) {
   const { state } = useDestinationsPanorama(id);
+
+  let gridClass = "grid grid-cols-1 gap-6";
+
+  if (state.data) {
+    if (state.data.length >= 2) {
+      gridClass += " sm:grid-cols-2";
+    }
+    if (state.data.length >= 3) {
+      gridClass += " lg:grid-cols-3";
+    }
+  }
 
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold text-center mb-6">Panorama</h2>
 
       {state.loading ? (
-        <p className="text-center">Memuat...</p>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <DestinationPanoramasItemSkeleton/>
+            <DestinationPanoramasItemSkeleton/>
+            <DestinationPanoramasItemSkeleton/>
+        </div>
       ) : state.error ? (
         <p className="text-center">Error: {state.error}</p>
       ) : state.data.length === 0 ? (
         <p className="text-center">Panorama masih kosong</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className={gridClass}>
           {state.data.map((pano) => (
             <DestinationPanoramasItem
               key={pano.id}
