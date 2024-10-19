@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { router } from "./router";
+import { cities } from "./util";
+
 export default function Footer() {
   const [isDropdownOpen, setIsDropdownOpen] = useState([false, false, false]);
 
@@ -16,21 +18,10 @@ export default function Footer() {
     },
     {
       title: "Kabupaten",
-      items: [
-        { name: "Kota Yogyakarta", href: "#" },
-        { name: "Sleman", href: "#" },
-        { name: "Kulon Progo", href: "#" },
-        { name: "Gunung Kidul", href: "#" },
-      ],
-    },
-    {
-      title: "Menarik",
-      items: [
-        { name: "Candi", href: "#" },
-        { name: "Pantai", href: "#" },
-        { name: "Musium", href: "#" },
-        { name: "Keraton", href: "#" },
-      ],
+      items: cities.map((kab) => ({
+        name: kab,
+        href: `/destinations?kabupaten=${kab.replace(" ", "+")}`
+      })),
     },
   ];
 
@@ -44,7 +35,6 @@ export default function Footer() {
   return (
     <footer className="bg-white py-8 border-t border-gray-300 mt-8">
       <div className="container mx-auto px-4">
-        {/* Mobile view*/}
         <div className="md:hidden">
           {footerData.map((section, index) => (
             <div key={index} className="mb-4">
@@ -58,12 +48,12 @@ export default function Footer() {
                 <ul className="mt-2">
                   {section.items.map((item, idx) => (
                     <li key={idx}>
-                      <a
-                        href={item.href}
+                      <Link
+                        to={item.href}
                         className="block py-1  text-slate-500 hover:text-slate-900 transition duration-300"
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -72,7 +62,6 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Desktop view*/}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           {footerData.map((section, index) => (
             <div key={index}>
@@ -80,12 +69,12 @@ export default function Footer() {
               <ul>
                 {section.items.map((item, idx) => (
                   <li key={idx}>
-                    <a
-                      href={item.href}
+                    <Link
+                      to={item.href}
                       className="block py-1  text-slate-500 hover:text-slate-900 transition duration-300"
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

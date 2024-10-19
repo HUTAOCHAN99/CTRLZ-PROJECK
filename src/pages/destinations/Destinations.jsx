@@ -57,6 +57,12 @@ export function Destinations() {
     const [sortOption, setSortOption] = useState(searchParam.get("sort") ? searchParam.get("sort") : "recommended");
     const [debouncedSearch] = useDebounce(search, 1000)
 
+    useEffect(() => {
+        setSearch(searchParam.has("q") ? searchParam.get("q") : "");
+        setKabupaten(searchParam.has("kabupaten") ? searchParam.get("kabupaten") : "All");
+        setSortOption(searchParam.has("sort") ? searchParam.get("sort") : "recommended");
+    }, [searchParam])
+
     const displayedDestinations = useMemo(() => {
         if (!data) return []
 
