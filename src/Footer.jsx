@@ -85,7 +85,8 @@ export default function Footer() {
 
       <div className="mt-8 text-center">
         <p className="text-gray-500">&copy; 2024 CTRL-Z All Rights Reserved.</p>
-        <div className="flex justify-center mt-4 space-x-6">
+        <p className="mt-2 text-gray-500 hover:text-gray-700"><a href="https://github.com/HUTAOCHAN99/CTRLZ-PROJECK/">GitHub repository</a></p>
+        <div className="flex justify-center mt-2 space-x-6">
           <Link
             to="/aboutus"
             className="text-base text-dark py-2 flex mx-8 group-hover:text-primary"
