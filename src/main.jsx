@@ -4,6 +4,7 @@ import App from './App.jsx'
 import "@photo-sphere-viewer/core/index.css"; 
 import './index.css'
 import "./firebase"
+import "@smastrom/react-rating/style.css"
 import { AuthContextProvider } from './firebase/AuthContext.jsx'
 
 createRoot(document.getElementById('root')).render(
