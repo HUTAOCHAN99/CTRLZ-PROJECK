@@ -4,8 +4,8 @@ import { MyDestination } from "./pages/mydestination/MyDestination";
 import { MyDestinationDetails } from "./pages/mydestination-details/MyDestinationDetails";
 import AboutUs from "./pages/aboutus/AboutUs";
 import { Layout } from "./Layout";
-import {Destination} from "./pages/destination/Destination";
-import Destinations from "./pages/home/Destinations";
+import { Destinations } from "./pages/destinations/Destinations";
+import { Destination } from "./pages/destination/Destination";
 
 export const router = createBrowserRouter([
     {

@@ -10,8 +10,7 @@ import { Rating } from "@smastrom/react-rating";
 function Destination({ destination, createLink }) {
   const { url } = useDestinationImageUrl(destination.id);
 
-  return <div>
-    <div
+  return <div
       className="bg-white rounded-lg shadow-lg overflow-hidden"
     >
       <img
@@ -21,7 +20,7 @@ function Destination({ destination, createLink }) {
       />
       <div className="p-4">
         <h4 className="text-xl font-semibold"><Link to={createLink(destination)}>{destination.name}</Link></h4>
-        <p className="text-gray-600 mt-2">{destination.description}</p>
+        <p className="text-gray-600 mt-2 truncate">{destination.description}</p>
         <div className="mt-4 flex justify-between items-center">
           <div className="w-24">
             {destination.avgRating && <Rating value={destination.avgRating} readOnly />}
@@ -32,7 +31,6 @@ function Destination({ destination, createLink }) {
         </div>
       </div>
     </div>
-  </div>
 }
 
 export default function DestinationList({ list, createLink }) {
